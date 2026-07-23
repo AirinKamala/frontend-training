@@ -1,28 +1,132 @@
 @font-face {
   font-family: "DM Sans";
-  src: url("~/assets/font/DM_Sans/DMSans-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("~/assets/font/DM_Sans/DMSans-VariableFont_opsz,wght.ttf")
+    format("truetype");
   font-weight: 100 1000;
   font-style: normal;
 }
 
 @font-face {
   font-family: "DM Sans";
-  src: url("~/assets/font/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("~/assets/font/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf")
+    format("truetype");
   font-weight: 100 1000;
   font-style: italic;
 }
 
 @font-face {
   font-family: "Playfair Display";
-  src: url("~/assets/font/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf") format("truetype");
+  src: url("~/assets/font/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf")
+    format("truetype");
   font-weight: 100 1000;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Playfair Display";
-  src: url("~/assets/font/Playfair_Display/PlayfairDisplay-Italic-VariableFont_wght.ttf") format("truetype");
+  src: url("~/assets/font/Playfair_Display/PlayfairDisplay-Italic-VariableFont_wght.ttf")
+    format("truetype");
   font-weight: 100 1000;
   font-style: italic;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+    font-family: $font-dm-sans;
+
+}
+
+h1,h2,h3{
+  font-family: $font-playfair-display;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+.btn-wrap {
+  display: flex;
+  gap: 4px;
+  button {
+    min-width: 2rem;
+    flex: 1;
+    &:hover {
+      transform: scale(0.95);
+      transition: transform 0.4s ease-in-out;
+    }
+  }
+
+  .btn-cancel {
+    border: 1px solid $accent;
+    background-color: white;
+    color: $accent;
+  }
+
+  .btn-confirm {
+    border: 1px solid $accent;
+    background-color: $accent;
+    color: white;
+  }
+}
+
+.form {
+  display: grid;
+  min-width: 280px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: $shadow;
+  padding: 1rem;
+
+  &__label:first-child{
+    margin-top: 0;
+  }
+  &__label {
+    margin-top: 2rem;
+  }
+  &__input {
+    height: 2rem;
+    border: none;
+    border-bottom: $border-gray;
+    margin-top: 2px;
+    padding: 0 4px;
+    width: 100%;
+    margin-bottom: .5rem;
+  }
+  &__pass {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    margin-left: -1.6rem;
+    align-self: center;
+  }
+
+  &__error {
+    color: red;
+    text-decoration: none;
+    list-style: none;
+  }
+  &__btn {
+    height: 2.5rem;
+    margin: 20px 0;
+    background-color: $accent;
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+
+    &:hover {
+      box-shadow: $shadow;
+      transform: scale(0.95);
+      transition: transform 0.5s ease-in-out;
+    }
+  }
+  .link{
+    color: $accent;
+    text-decoration: underline;
+    font-weight: 600;
+  }
+}
+
 
