@@ -1,19 +1,20 @@
 <template>
-    <UiLogo class="logo" />
     <div class="wrapper">
-        <aside class="as">
+        <section class="as">
             <img src="/assets/images/login.webp" alt="">
-        </aside>
-        <main class="main">
+        </section>
+        <section class="main">
             <h1>Login</h1>
-            <form @submit.prevent class="form">
+            <hr>
+            <form @submit.prevent class="form" style="margin-top: 2rem;">
                 <label for="" class="form__label"> Username/Email</label>
                 <input v-model="draft.email" type="email" required class="form__input" placeholder="john@email.com">
                 <label for="" class="form__label"> Password
                 </label>
                 <div>
-                    <input  v-model="draft.password":type="pass" class="form__input" required placeholder="*******" min="8">
-                    <button :title="`${pass ? 'Show': 'Hide'} password`" @click="togglEye" class="form__pass">
+                    <input v-model="draft.password" :type="pass" class="form__input" required placeholder="*******"
+                        min="8">
+                    <button :title="`${pass ? 'Show' : 'Hide'} password`" @click="togglEye" class="form__pass">
                         <svg v-if="pass === 'password'" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye">
@@ -39,7 +40,7 @@
                 <p>You dont have any account? <router-link to="register" class="link">Register</router-link></p>
             </form>
 
-        </main>
+        </section>
     </div>
 </template>
 
@@ -56,18 +57,12 @@ const draft = ref({
     password: ''
 })
 const error = ref('')
-const handleLogin = () =>{
+const handleLogin = () => {
 
 }
 </script>
 
 <style lang="scss" scoped>
-.logo {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
 .wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -79,7 +74,13 @@ const handleLogin = () =>{
 }
 
 .main {
+    z-index: 30;
     padding: $padd;
+    min-width: 280px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: $shadow;
+    padding: 1rem;
 }
 
 .as {
@@ -89,9 +90,12 @@ const handleLogin = () =>{
     overflow: hidden;
     height: 100%;
     display: flex;
+    position: sticky;
+    top: 0;
 
     img {
         object-fit: cover;
+        z-index: 1;
         height: 100%;
         width: 100%;
         display: flex;

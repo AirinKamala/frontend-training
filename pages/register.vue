@@ -1,10 +1,10 @@
 <template>
-    <UiLogo class="logo" />
     <div class="wrapper">
 
-        <main class="main">
+        <section class="main">
             <h1>Register</h1>
-            <form @submit.prevent class="form">
+            <hr>
+            <form @submit.prevent class="form" style="margin-top: 2rem;">
                 <label for="" class="form__label">Name</label>
                 <input v-model="draft.name" type="text" required class="form__input" placeholder="John Doe">
                 <label for="" class="form__label"> Username/Email</label>
@@ -37,10 +37,10 @@
                 <p>Already have account? <router-link to="login" class="link">Login</router-link></p>
             </form>
 
-        </main>
-        <aside class="as">
+        </section>
+        <section class="as">
             <img src="/assets/images/register.webp" alt="">
-        </aside>
+        </section>
     </div>
 </template>
 
@@ -79,12 +79,6 @@ const handleRegister = () => {
 </script>
 
 <style lang="scss" scoped>
-.logo {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
 .wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -98,6 +92,11 @@ const handleRegister = () => {
 .main {
     padding: $padd;
     z-index: 2;
+    min-width: 280px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: $shadow;
+    padding: 1rem;
 }
 
 .as {
