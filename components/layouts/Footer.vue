@@ -35,8 +35,6 @@ const date = new Date().getFullYear()
     padding: $padd;
     align-items: center;
     width: 100%;
-    position: fixed;
-    bottom: 0;
     padding-top: 1rem;
     background-color: white;
     border-top: 2px solid rgba(196, 196, 196, 0.595);

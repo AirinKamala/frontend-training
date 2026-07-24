@@ -13,18 +13,22 @@
 .header {
     display: flex;
     padding: 1rem;
+    position: sticky;
+    z-index: 99;
+    background-color: white;
+    top: 0;
     border-bottom: 2px solid rgba(196, 196, 196, 0.595);
     justify-content: space-between;
 
     &__nav {
-        display: flex;
+        display: grid;
         gap: .5rem;
         justify-content: space-around;
         .btn{
             border-radius: 10px;
         flex: 1;
             padding:  0.5rem;
-            width: 4rem;
+            width: 6rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -50,6 +54,7 @@
 @media (width >=$sm-mx) {
     .header__nav{
         width: 16rem;
+        display: flex
     }
 }
 </style>
