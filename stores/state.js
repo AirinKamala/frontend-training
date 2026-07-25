@@ -202,9 +202,29 @@ export const useStateStore = defineStore("state", () => {
       category: "comedy",
     },
   ];
+  const formatted = (date) => {
+    const newDate = new Date(date);
+    return new Intl.DateTimeFormat("id-ID", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(newDate);
+  };
+
+  const profile = {
+    name: "Jhon Doe",
+    email: "jhondoe@mail.com",
+    profile_image: 'https://picsum.photos/400/300?random=2',
+    about: 'Sainted it that sitting lenore nights. Flung plutonian word evermore loneliness i there. Bird that.',
+    updated_at: "2025-11-12T06:35:04.000000Z",
+    created_at: "2025-11-12T06:35:04.000000Z",
+    id: 3,
+  };
 
   return {
     activeModal,
     articles,
+    formatted,
+    profile
   };
 });

@@ -89,6 +89,16 @@ a {
     width: 100%;
     margin-bottom: 0.5rem;
   }
+
+  &__text {
+    height: 2rem;
+    border-bottom: $border-gray;
+    margin-top: 2px;
+    padding: 0 4px;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
   &__pass {
     position: absolute;
     background-color: transparent;
