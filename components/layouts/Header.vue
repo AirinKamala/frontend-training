@@ -3,8 +3,8 @@
         <UiLogo />
 
         <nav class="header__nav">
-            <router-link to="register" class="header__nav__reg btn">Register</router-link>
-            <router-link to="login" class="header__nav__log btn">Login</router-link>
+            <router-link to="register" class="btn-border btn">Register</router-link>
+            <router-link to="login" class="btn-accent btn">Login</router-link>
         </nav>
     </header>
 </template>
@@ -26,7 +26,7 @@
         justify-content: space-around;
         .btn{
             border-radius: 10px;
-        flex: 1;
+            flex: 1;
             padding:  0.5rem;
             width: 6rem;
             display: flex;
@@ -38,16 +38,7 @@
                 transition: transform .5s ease-in-out;
             }
         }
-        &__log{
-            color: white;
-            background-color: $accent;
-            border:1px solid $accent;
-
-        }
-        &__reg{
-            color: $accent;
-            border:1px solid $accent;
-        }
+       
     }
 }
 

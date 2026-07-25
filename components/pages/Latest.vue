@@ -34,22 +34,13 @@
 <script setup lang="ts">
 import { useStateStore } from '~/stores/state';
 
-const { articles } = useStateStore()
+const { articles,formatted } = useStateStore()
 
-const formatted = (date:any) => {
-    const newDate = new Date(date)
-  return new Intl.DateTimeFormat('id-ID', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-   }).format(newDate)
-}
+
 </script>
 
 <style lang="scss" scoped>
 .latest {
-    padding: 0 .5rem 0 2rem;
-    margin-bottom: 4rem;
 
     &__header {
         display: flex;
@@ -72,62 +63,11 @@ const formatted = (date:any) => {
     }
 
     &__wrapper {
-        margin-top: 2remgit;
+        margin-top: 2rem;
         overflow-x: auto;
         width: 100%;
         display: flex;
         gap: 2rem;
-
-        .card {
-            display: grid;
-            text-align: justify;
-            &__pic {
-                width: 24rem;
-                height: 24rem;
-                display: block;
-                overflow: hidden;
-                border-radius: 20px;
-                isolation: isolate;
-
-                &__img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    transition: transform .8s ease-in-out;
-
-                    &:hover {
-                        transform: scale(1.2);
-                    }
-                }
-            }
-
-            &__title {
-                font-size: 18pt;
-            }
-
-            &__footer{
-                margin-top: 2rem;
-                display: flex;
-                justify-content: space-between;
-                    align-items: center;
-
-                &_start{
-                    display: flex;
-                    align-items: center;
-                    gap: 4px;
-                }
-                &__category{
-                    color: $accent;
-                    background-color: #bdeea1;
-                    padding: .2rem .5rem;
-                    margin: 0 4px;
-                    border-radius: 10px;
-
-                }
-
-            }
-
-        }
     }
 
 }
