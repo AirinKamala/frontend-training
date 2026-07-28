@@ -5,17 +5,17 @@
             <button v-if="isExplore" class="section__btn">Explore more &rarr;</button>
         </div>
         <div :class="`section__${props.variant}`">
-            <div class="card" v-for="story in props.stories" :key="story.id">
+            <div class="card" v-for="story in props.stories" :key="story?.id">
                 <picture class="card__pic">
-                    <img :src="story?.image" loading="lazy" :alt="story?.title" class="card__pic__img">
+                    <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                 </picture>
                 <div class="card__body">
-                    <h3 class="card__title">{{ story.title }}</h3>
-                    <p>{{ story.shortContent }}</p>
+                    <h3 class="card__title">{{ story?.title }}</h3>
+                    <p>{{ story?.content_preview }}</p>
                     <div class="card__footer">
-                        <div class="avatar"><img :src="story.authorAvatar" alt="avatar"
-                                style="border-radius: 100%; margin: 4px;"><span>{{ story.authorName }}</span></div>
-                        <p>{{ state.formatted(story.createdDate) }}</p>
+                        <div class="avatar"><img :src="story?.author.profile_image" alt="avatar"
+                                style="border-radius: 100%; margin: 4px;"><span>{{ story?.author.name }}</span></div>
+                        <p>{{ state.formatted(story?.created_at) }}</p>
                     </div>
                 </div>
             </div>
@@ -106,21 +106,13 @@
 </style>
 
 <script setup lang="ts">
+import type { IStory } from '~/types/typeIn';
+
 const state = useStateStore()
-interface Story {
-    id: number,
-    image: string,
-    title: string,
-    shortContent: string,
-    authorAvatar: string,
-    authorName: string,
-    createdDate: string,
-    category: string,
-}
 const props = defineProps({
 
     title: { type: String, required: true },
-    stories: { type: Array<Story>, required: true },
+    stories: { type: Array<IStory> || [], required: true },
     variant: { type: String, required: true, value: ["grid", "flex"] },
     isExplore: { type: Boolean, default: true }
 })
