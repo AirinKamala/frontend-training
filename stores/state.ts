@@ -202,7 +202,7 @@ export const useStateStore = defineStore("state", () => {
       category: "comedy",
     },
   ];
-  const formatted = (date) => {
+  const formatted = (date:string) => {
     const newDate = new Date(date);
     return new Intl.DateTimeFormat("id-ID", {
       year: "numeric",
