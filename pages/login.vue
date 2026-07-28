@@ -5,6 +5,7 @@
         </section>
         <section class="main">
             <h1>Login</h1>
+            {{ draft }}
             <hr>
             <form @submit.prevent class="form" style="margin-top: 2rem;">
                 <label for="" class="form__label"> Username/Email</label>

@@ -27,17 +27,16 @@ export interface IApiFormat<T> {
     meta?: T,
 }
 
-export interface IUser {
-    name: string,
-    email: string,
-    profile_image: string | null,
-    about: string | null,
-    updated_at: string,
-    created_at: string,
-    id: number
-}
 
 export interface IAuth {
-    user: IUser,
+    user: {
+        name: string,
+        email: string,
+        profile_image: string | null,
+        about: string | null,
+        updated_at: string,
+        created_at: string,
+        id: number
+    },
     token: string
 }
