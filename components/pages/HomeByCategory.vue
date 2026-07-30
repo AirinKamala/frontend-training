@@ -10,8 +10,8 @@
                     <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                 </picture>
                 <div class="card__body">
-                    <h3 class="card__title">{{ story?.title }}</h3>
-                    <p>{{ story?.content_preview }}</p>
+                    <h3 class="card__title" v-html="story?.title"></h3>
+                    <Tiptap v-if="story" v-model="story.content_preview" />
                     <div class="card__footer">
                         <div class="avatar"><img :src="story?.author.profile_image" alt="avatar"
                                 style="border-radius: 100%; margin: 4px;"><span>{{ story?.author.name }}</span></div>
@@ -107,6 +107,7 @@
 
 <script setup lang="ts">
 import type { IStory } from '~/types/typeIn';
+import Tiptap from '../ui/Tiptap.vue';
 
 const state = useStateStore()
 const props = defineProps({

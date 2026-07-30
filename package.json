@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.1",
+    "@tiptap/pm": "^3.29.2",
+    "@tiptap/starter-kit": "^3.29.2",
+    "@tiptap/vue-3": "^3.29.2",
     "@vee-validate/nuxt": "^4.15.1",
     "@vee-validate/yup": "^4.15.1",
     "nuxt": "^3.21.10",
