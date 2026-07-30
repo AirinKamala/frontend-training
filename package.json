@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.1",
+    "@tiptap/extension-text-align": "^3.29.2",
     "@tiptap/pm": "^3.29.2",
     "@tiptap/starter-kit": "^3.29.2",
     "@tiptap/vue-3": "^3.29.2",

@@ -11,7 +11,7 @@
                 </picture>
                 <div class="card__body">
                     <h3 class="card__title" v-html="story?.title"></h3>
-                    <Tiptap v-if="story" v-model="story.content_preview" />
+                    <Tiptap v-if="story" :can-edit="false" v-model="story.content_preview" />
                     <div class="card__footer">
                         <div class="avatar"><img :src="story?.author.profile_image" alt="avatar"
                                 style="border-radius: 100%; margin: 4px;"><span>{{ story?.author.name }}</span></div>
