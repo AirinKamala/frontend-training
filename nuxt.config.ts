@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       }
     },
     optimizeDeps:{
-      include: ['tiny-case']
+      include: ['tiny-case', 'vue-advanced-cropper']
     }
   },
   nitro: {
