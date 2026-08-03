@@ -1,12 +1,19 @@
+//font
 $font-dm-sans: "DM Sans", sans-serif;
 $font-playfair-display: "Playfair Display", serif;
+
+//color
 $accent: #006a2a;
+$secondary: #f0f5ed;
 $accent-light: #b7f7d191;
+
+//property
 $shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.43);
 $glow: 0 4px 6px -1px rgba(247, 247, 247, 0.43);
 $padd: 0.5rem 2rem;
 $border-gray: 2px solid rgba(128, 128, 128, 0.846);
 
+//breakpoint
 $sm : 320px;
 $sm-mx : 480px;
 $md: 640px;

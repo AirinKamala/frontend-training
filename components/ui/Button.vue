@@ -3,12 +3,21 @@
     :style="`background-color: ${currectType.back}; border: 1px solid ${currectType.border}; color: ${currectType.color}`"
 ><slot></slot></button>
 </template>
+<style lang="scss" scoped>
+
+button:hover, button:active{
+    transform: scale(.95);
+    transition: all .5s ease-in-out;
+    box-shadow: $shadow;
+
+}
+</style>
 
 <script setup lang="ts">
     const emit = defineEmits(['btn-click'])
     
     const props = defineProps({
-        type: {type: String, default: 'border'},
+        type: {type: String, default: 'accent'},
     })
     
 
@@ -27,6 +36,12 @@
             back: 'white',
             border: '#006a2a',
             color: '#006a2a'
+        }
+
+        if(props.type === 'remove') return btnProp.value ={
+            back: '#990202',
+            border: '#990202',
+            color: '#ffffff'
         }
         return btnProp.value
     })
