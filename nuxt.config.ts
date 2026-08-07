@@ -5,8 +5,8 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true
   },
-  modules: ['@pinia/nuxt', '@vee-validate/nuxt', 'nuxt-yup'],
-  css: ['~/assets/scss/global.scss'],
+  modules: ['@pinia/nuxt', '@vee-validate/nuxt', 'nuxt-yup', '@nuxtjs/supabase'],
+  supabase: { redirect: false, types: false},
   vite: {
     css: {
       preprocessorOptions: {
@@ -15,24 +15,15 @@ export default defineNuxtConfig({
         }
       }
     },
-    optimizeDeps:{
-      include: ['tiny-case', 'vue-advanced-cropper']
+    optimizeDeps: {
+      include: ['tiny-case', 'vue-advanced-cropper', '@supabse/supabse-js']
     }
   },
-  nitro: {
-    devProxy: {
-      '/api': {
-        target: 'https://timestory.tmdsite.my.id/api',
-        changeOrigin: true,
-        prependPath: false
-      }
-    }
-  },
+  css: ['assets/scss/global.scss'],
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.NODE_ENV === 'development'
-        ? '/api'
-        : 'https://timestory.tmdsite.my.id/api'
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY
     }
   }
 })

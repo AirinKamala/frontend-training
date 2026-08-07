@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.1",
+    "@supabase/supabase-js": "^2.112.1",
     "@tiptap/extension-link": "^3.29.2",
     "@tiptap/extension-text-align": "^3.29.2",
     "@tiptap/extensions": "^3.29.2",
@@ -33,6 +34,7 @@
   },
   "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
   "devDependencies": {
+    "@nuxtjs/supabase": "^2.0.9",
     "@types/node": "^26.1.2",
     "husky": "^9.1.7",
     "sass": "^1.101.0"
