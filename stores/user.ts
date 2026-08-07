@@ -1,30 +1,67 @@
-import { useUserRepo } from "~/repository/authRepo"
-import type { IAuth } from "~/types/typeIn"
+import type { Session, User } from "@supabase/supabase-js"
+import { AuthRepository } from "~/repository/AuthRepository"
+import type { ILogin, IRegister } from "~/types/IAuthRepository"
 
 export const useUserStore = defineStore('user', () => {
+    const authRepo = new AuthRepository()
 
-    const currentUser = ref<IAuth | null>(null)
-    const userRepo = useUserRepo()
-    const tokenCookie = useCookie('auth_token', { maxAge: 24 * 7 * 60 * 60 }) //7 days
-    const isAuthenticated = computed(()=> !!tokenCookie.value)
+    const user = ref<User | null>(null)
+    const isLoading = ref<Boolean>(false)
+    const session = ref<Session | null>(null)
+    const errorMes = ref<string | null>(null)
+    const isAuth = computed(() => !!user.value)
 
+    async function register(credentials: IRegister) {
+        isLoading.value = true
+        errorMes.value = null
+        try {
+            const response = await authRepo.register({ ...credentials })
+            user.value = response.user
+            session.value = response.session
 
-    const loginHandle = async (credentials: { email: string, password: string}) => {
-        const response = await userRepo.login(credentials)
-        if (!response) return
-        currentUser.value = response
-
-    }
-    const registerHandle = async (payload: { name: string, email: string, password: string, password_confirmation: string}) => {
-        
-        const response = await userRepo.register(payload)
-        if (response) {
-            currentUser.value = response
-            console.log(currentUser)
             return response
+        } catch (err: any) {
+            errorMes.value = err.message || 'Registration Failed'
+            throw err
+        } finally {
+            isLoading.value = false
         }
     }
+
+    async function login(payload: ILogin) {
+        isLoading.value = true
+        errorMes.value = null
+        try {
+            const response = await authRepo.login({...payload})
+            if(!response.user || !response.session) {errorMes.value = response.msg}
+            user.value = response.user
+            session.value = response.session
+            return response
+        } catch (err: any) {
+            errorMes.value = err.message || 'Login failed'
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    async function logout() {
+        isLoading.value = true
+        errorMes.value = null
+
+        try {
+            await authRepo.logout()
+            user.value = null
+            session.value = null
+        } catch (err:any) {
+            errorMes.value = err.message
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     return {
-        currentUser, loginHandle, registerHandle
+        register, login, logout, isAuth, user, session, errorMes, isLoading
     }
 })
