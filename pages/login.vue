@@ -5,7 +5,6 @@
         </section>
         <section class="main">
             <h1>Login</h1>
-            {{ draft }}
             <hr>
             <form @submit.prevent class="form" style="margin-top: 2rem;">
                 <label for="" class="form__label"> Username/Email</label>
@@ -36,7 +35,7 @@
                         </svg>
                     </button>
                 </div>
-                <p class="form__error" v-if="error">{{ error }}</p> <!--add var error-->
+                <p class="form__error" v-if="auth.errorMes">{{ auth.errorMes }}</p>
                 <button class=" form__btn" @click="handleLogin">Login</button>
                 <p>You dont have any account? <router-link to="register" class="link">Register</router-link></p>
             </form>
@@ -47,7 +46,7 @@
 
 <script setup lang="ts">
 const pass = ref('password')
-
+const auth = useUserStore()
 const togglEye = () => {
     if (pass.value == 'password') pass.value = 'text'
     else pass.value = 'password'
@@ -58,8 +57,11 @@ const draft = ref({
     password: ''
 })
 const error = ref('')
-const handleLogin = () => {
 
+const handleLogin = () => {
+     auth.login(draft.value)
+     if(!auth.user || !auth.session) return
+     navigateTo('/dashboard')
 }
 </script>
 

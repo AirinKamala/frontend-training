@@ -1,6 +1,5 @@
 <template>
     <div class="wrapper">
-
         <section class="main">
             <h1>Register</h1>
             <hr>
@@ -36,9 +35,11 @@
                 <p class="form__error" v-if="actionError">{{ actionError }}</p> <!--add var error-->
 
                 <label><input type="checkbox" name="showPass" v-model="pass"> Show Password</label>
-                <button type="submit" class="form__btn">Register</button>
-                <p>Already have account? <router-link to="login" class="link">{{ isLoading ?
-                        'Loading...':'Login'}}</router-link></p>
+                <p class="form__error" v-if="auth.errorMes">{{ auth.errorMes }}</p>
+
+                <button type="submit" class="form__btn">{{ auth.isLoading ?
+                    'Loading...' : 'Login' }}</button>
+                <p>Already have account? <router-link to="login" class="link">Login</router-link></p>
             </form>
 
         </section>
@@ -76,24 +77,24 @@ const passRule = computed(() => {
         samePass: conVal !== val && conVal.length > 0
     }
 })
-
-const isLoading = ref(false)
 const actionError = ref<any | null>(null)
 const auth = useUserStore()
 const handleRegister = async () => {
-    isLoading.value = true
 
     try {
         console.log({ ...draft.value })
-        await auth.registerHandle({ ...draft.value })
-        // if(error) actionError.value = error
+        const credintials = {
+            email: draft.value.email,
+            password: draft.value.password,
+            name: draft.value.name
+        }
+        const { user, session } = await auth.register(credintials)
+        if(!user || !session) return
         await navigateTo('/login')
 
     } catch (err: any) {
         console.error('Registration error:', err)
         actionError.value = err?.data?.message || err?.message || 'Registration failed.'
-    } finally {
-        isLoading.value = false
     }
 }
 
@@ -101,6 +102,7 @@ const handleRegister = async () => {
 
 <style lang="scss" scoped>
 .wrapper {
+    background-color: $bg;
     display: flex;
     flex-wrap: wrap;
     margin-top: 4rem;
