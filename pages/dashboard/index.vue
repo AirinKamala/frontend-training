@@ -7,10 +7,9 @@
                 <img :src="profile.profile_image" alt="">
             </picture>
             <div class="profile__head__des">
-                <h2>{{ profile.name }}
-                    <span>{{ profile.email }}</span>
+                <h2>{{ user?.identities?.[0]?.identity_data?.name}}
+                    <span>{{ user?.email }}</span>
                 </h2>
-
                 <p>{{ profile.about }}</p>
             </div>
         </div>
@@ -30,7 +29,7 @@
                         <img :src="story?.image" loading="lazy" :alt="story?.title" class="card__pic__img">
                     </picture>
                     <div class="wrap">
-                        <button class="btn-act" @click="()=> {openModal('edit', story)}">
+                        <button class="btn-act" @click="() => { openModal('edit', story) }">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-square-pen-icon lucide-square-pen">
@@ -44,10 +43,10 @@
                             <form action="" class="form">
                                 <label for="" class="form__label">Title</label>
                                 <input v-model="modalData.title" type="text" class="form__text">
-                                
+
                                 <label for="" class="form__label">Short Content</label>
                                 <input v-model="modalData.shortContent" type="text" class="form__text">
-                                
+
                                 <label for="" class="form__label">Category</label>
                                 <select name="" id="" class="form__text">
                                     <option value="">Comedy</option>
@@ -70,10 +69,10 @@
                                     d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
                             </svg>
                         </button>
-                        <button class="btn-act" @click="openModal('delete', story)"><svg xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-trash2-icon lucide-trash-2">
+                        <button class="btn-act" @click="openModal('delete', story)"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
                                 <path d="M10 11v6" />
                                 <path d="M14 11v6" />
                                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
@@ -84,8 +83,8 @@
                             <h2>Delete story</h2>
                             <p>Are you sure to delete this story</p>
                             <div class="btn-wrap">
-                                <button class="btn-confirm" @click="closeModal">Yes</button><button
-                                    class="btn-cancel" @click="closeModal">Cancel</button>
+                                <button class="btn-confirm" @click="closeModal">Yes</button><button class="btn-cancel"
+                                    @click="closeModal">Cancel</button>
                             </div>
                         </UiModal>
                     </div>
@@ -109,8 +108,9 @@
 import UiModal from '~/components/ui/Modal.vue'
 const state = useStateStore()
 const profile = state.profile
+const { user } = useUserStore()
 
-const {openModal, closeModal, modalData, modalType} = useModal()
+const { openModal, closeModal, modalData, modalType } = useModal()
 
 const draft = ref({
     id: 0,

@@ -3,7 +3,8 @@
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css';
 
-const emit = defineEmits(['taken'])
+const emit = defineEmits(['taken', 'named'])
+const imageName = ref<String>('')
 const inputEl = ref<any>(null)
 const imgSrc = ref<string>('')
 const croppedImg = ref<any>(null)
@@ -11,6 +12,7 @@ const result = ref<any>(null)
 const handleFileChange = (e: Event) => {
     const file = (e.target as HTMLInputElement).files?.[0]
     if (file) {
+        imageName.value = file.name
         const reader = new FileReader()
         reader.onload = (event) => {
             imgSrc.value = event.target?.result as string
@@ -33,6 +35,7 @@ const crop = () => {
     croppedImg.value = null
     imgSrc.value = ''
     emit('taken', result.value)
+    emit('named', imageName.value)
 }
 
 </script>
@@ -56,6 +59,7 @@ const crop = () => {
 
         <div v-if="result" class="cropper__result">
             <img :src="result" alt="">
+            <p style="color: #333333; margin: .4rem;">{{ imageName }}</p>
             <UiButton @btn-click="result = null" style=" padding:.5rem 1rem;" type="remove">Remove image</UiButton>
         </div>
         <div class="cropper__content" @click="inputEl.click()" v-if="!imgSrc && !result">

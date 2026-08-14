@@ -202,7 +202,7 @@ export const useStateStore = defineStore("state", () => {
       category: "comedy",
     },
   ];
-  const formatted = (date:string) => {
+  const formatted = (date: string) => {
     const newDate = new Date(date);
     return new Intl.DateTimeFormat("id-ID", {
       year: "numeric",
@@ -221,7 +221,23 @@ export const useStateStore = defineStore("state", () => {
     id: 3,
   };
 
+  const base64ToBlob=(base:string) => {
+    const byteString = atob(base.split(',')[1]);
+    const mimeString = base.split(',')[0].split(':')[1].split(';')[0];
+
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
+  }
+
+
   return {
+    base64ToBlob,
     activeModal,
     articles,
     formatted,

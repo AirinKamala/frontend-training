@@ -129,7 +129,8 @@ const setLink = () => {
     editor.value?.chain().focus().extendMarkRange('link').setLink({ href: url, target: '_blank' }).run()
     closeModal()
 }
-
+const emit = defineEmits(['tip'])
+// const tp = ref('')
 onMounted(() => {
     editor.value = new Editor({
         extensions: [StarterKit,
@@ -142,6 +143,10 @@ onMounted(() => {
             })
         ],
         content: '',
+        onUpdate({editor}) {
+            // tp.value = editor.getHTML()
+            emit('tip', editor.getHTML())
+        }
     })
 })
 onBeforeUnmount(() => {

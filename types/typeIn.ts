@@ -2,7 +2,7 @@ export interface IStory {
     id: number,
     slug: string,
     title: string,
-    cover_image: string,
+    cover_image?: string,
     created_at: string,
     content_preview: string,
     author: IAuthor,
@@ -16,7 +16,7 @@ export interface IAuthor {
 }
 
 export interface ICategory {
-    id: 0,
+    id: string,
     name: string,
     slug: string
 }
@@ -39,4 +39,8 @@ export interface IAuth {
         id: number
     },
     token: string
+}
+
+export interface typeIn {
+    getCategory(): Promise<ICategory[]>
 }
