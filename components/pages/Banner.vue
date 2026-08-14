@@ -7,9 +7,7 @@ import Search from '../ui/Search.vue';
 <template>
     <section class="banner">
         
-        <h1 class="banner__h1">
-            <span> Hi, Name.<br></span>
-            Welcome to Storytime</h1>
+        <h1 class="banner__h1">Welcome to Storytime</h1>
         <p class="banner_p">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur explicabo ipsum vitae
             deserunt voluptate</p>
        <Search text="Search story"></Search>
@@ -23,7 +21,8 @@ import Search from '../ui/Search.vue';
 <style lang="scss" scoped>
 .banner {
     width: 100%;
-    height: 90vh;
+    height: auto;
+    min-height: 60vh;
     padding: 2rem clamp(5%, 10%, 20%) 0  clamp(5%, 10%, 20%)  ;
     text-align: center;
     display: flex;
@@ -32,7 +31,7 @@ import Search from '../ui/Search.vue';
     gap: 2rem;
 
     &__h1 {
-        font-size: 24pt;
+        font-size: 60px;
         font-family: $font-playfair-display;
         font-weight: 700;
         span{
@@ -48,9 +47,11 @@ import Search from '../ui/Search.vue';
         display: flex;
         justify-content: center;
         &__img{
+            max-height: 40vh;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-position: top;
+            object-fit: contain;
 
         }
     }

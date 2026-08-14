@@ -3,8 +3,8 @@
         <UiLogo />
 
         <nav class="header__nav">
-            <router-link to="register" class="btn-border btn">Register</router-link>
-            <router-link to="login" class="btn-accent btn">Login</router-link>
+            <UiButton type="border" @btn-click="navigateTo('/register')" class="btn">Register</UiButton>
+            <UiButton type="accent" @btn-click="navigateTo('/login')" class="btn">Login</UiButton>
         </nav>
     </header>
 </template>
@@ -21,7 +21,7 @@
     justify-content: space-between;
 
     &__nav {
-        display: grid;
+        display: flex;
         gap: .5rem;
         justify-content: space-around;
         .btn{
@@ -32,11 +32,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            &:hover, &:active{
-                box-shadow: $shadow;
-                transform: scale(0.95);
-                transition: transform .5s ease-in-out;
-            }
         }
        
     }
@@ -45,7 +40,6 @@
 @media (width >=$sm-mx) {
     .header__nav{
         width: 16rem;
-        display: flex
     }
 }
 </style>

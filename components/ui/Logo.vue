@@ -1,5 +1,5 @@
 <template>
-    <span class="logo" @click="$router.push('/')"><span class="logo__accent">st</span>ory time</span>
+    <span class="logo" @click="navigateTo('/')"><span class="logo__accent">st</span>ory time</span>
 </template>
 
 <style lang="scss" scoped>
@@ -7,6 +7,7 @@
     color: black;
     font-size: 16pt;
     font-family: $font-playfair-display;
+    cursor: pointer;
 
     &__accent {
         background-color: black;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Modal from '~/components/ui/Modal.vue';
-const { openModal, closeModal } = useModal()
+const { openModal, closeModal, modalType } = useModal()
 </script>
 
 <template>
@@ -16,8 +16,8 @@ const { openModal, closeModal } = useModal()
                 My Name &darr;
                 <div class="dropdown__content">
                     <span class="">My profile</span>
-                    <span @click="openModal" class="">Logout</span>
-                     <Modal>
+                    <span @click="openModal('logout')" class="">Logout</span>
+                     <Modal v-if="modalType === 'logout'" @close="closeModal">
                         <h2>Logout</h2>
                         <p>Are you sure want to logout?</p>
                         <div class="btn-wrap">

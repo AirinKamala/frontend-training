@@ -11,11 +11,11 @@
                 </picture>
                 <div class="card__body">
                     <h3 class="card__title" v-html="story?.title"></h3>
-                    <Tiptap v-if="story" :can-edit="false" v-model="story.content_preview" />
+                    <Tiptap v-if="story" style="scroll-behavior: auto;" :can-edit="false" v-model="story.content_preview" />
                     <div class="card__footer">
                         <div class="avatar"><img :src="story?.author.profile_image" alt="avatar"
                                 style="border-radius: 100%; margin: 4px;"><span>{{ story?.author.name }}</span></div>
-                        <p>{{ state.formatted(story?.created_at) }}</p>
+                        <p>{{ story?.created_at }}</p>
                     </div>
                 </div>
             </div>
@@ -63,17 +63,13 @@
     &__grid {
         margin-top: 2rem;
         width: 100%;
-        display: grid;
+        display: flex;
+        flex-wrap: wrap;
         gap: 10px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        grid-template-rows: repeat(2, minmax(0, 1fr));
-
         &>*:first-child {
             display: block;
-            grid-column: span 2 / span 3;
-            grid-row: span 2 / span 2;
             align-items: end;
-
+            flex: full;
             .card__pic {
                 width: 100%;
                 height: 80%;
@@ -81,9 +77,7 @@
         }
 
         &>*:not(:first-child) {
-            grid-column: span 1 / span 3;
-            grid-row: span 1 / span 2;
-
+            flex: 2;
             picture {
                 width: 100%;
                 max-height: 20rem;
@@ -98,6 +92,37 @@
         min-height: 20rem;
     }
 
+    .section__grid {
+        margin-top: 2rem;
+        width: 100%;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+
+        &>*:first-child {
+            display: block;
+            grid-column: span 2 / span 3;
+            grid-row: span 2 / span 2;
+            align-items: end;
+
+            .card__pic {
+                width: 100%;
+                height: 70vh;
+            }
+        }
+
+        &>*:not(:first-child) {
+            grid-column: span 1 / span 3;
+            grid-row: span 1 / span 2;
+            height: min-content;
+
+            picture {
+                width: 100%;
+                max-height: 20rem;
+            }
+        }
+    }
     .section__flex > .card > .card__pic {
         height: auto;
         max-height: 24rem;

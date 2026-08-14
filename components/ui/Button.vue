@@ -1,5 +1,5 @@
 <template>
-<button type="button" @click="$emit('btn-click', $event)"
+<button style="letter-spacing: .1rem; font-weight: 600;" type="button" @click="$emit('btn-click', $event)"
     :style="`background-color: ${currectType.back}; border: 1px solid ${currectType.border}; color: ${currectType.color}`"
 ><slot></slot></button>
 </template>
