@@ -1,14 +1,12 @@
 <template>
-
-
     <section class="profile">
         <div class="profile__head">
             <picture class="profile__head__pic">
-                <img :src="profile.profile_image" alt="">
+                <img :src="profile?.profile_image" alt="">
             </picture>
             <div class="profile__head__des">
-                <h2>{{ user?.identities?.[0]?.identity_data?.name}}
-                    <span>{{ user?.email }}</span>
+                <h2>{{ auth.user?.identities?.[0]?.identity_data?.name}}
+                    <span>{{ auth.user?.email }}</span>
                 </h2>
                 <p>{{ profile.about }}</p>
             </div>
@@ -108,10 +106,10 @@
 import UiModal from '~/components/ui/Modal.vue'
 const state = useStateStore()
 const profile = state.profile
-const { user } = useUserStore()
+const auth = useUserStore()
 
 const { openModal, closeModal, modalData, modalType } = useModal()
-
+console.log(auth.user)
 const draft = ref({
     id: 0,
     image: "",
@@ -123,6 +121,11 @@ const draft = ref({
     createdDate: "",
     category: "",
 },)
+
+onMounted(()=>{
+const auth = useUserStore()
+auth.getUser()
+})
 </script>
 
 <style lang="scss" scoped>
