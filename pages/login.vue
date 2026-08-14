@@ -6,7 +6,7 @@
         <section class="main">
             <h1>Login</h1>
             <hr>
-            <form @submit.prevent class="form" style="margin-top: 2rem;">
+            <form @submit.prevent class="form" >
                 <label for="" class="form__label"> Username/Email</label>
                 <input v-model="draft.email" type="email" required class="form__input" placeholder="john@email.com">
                 <label for="" class="form__label"> Password
@@ -69,11 +69,11 @@ const handleLogin = () => {
 .wrapper {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 4rem;
     justify-content: center;
     align-items: center;
     align-self: center;
     font-family: $font-dm-sans;
+    min-height: 100vh;
 }
 
 .main {

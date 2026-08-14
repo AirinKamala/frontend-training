@@ -105,7 +105,7 @@ const handleRegister = async () => {
     background-color: $bg;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 4rem;
+    min-height: 100vh;
     justify-content: center;
     align-items: center;
     align-self: center;
