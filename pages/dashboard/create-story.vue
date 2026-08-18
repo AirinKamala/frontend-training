@@ -18,6 +18,7 @@ const handleAddStory = async () => {
     try {
         await uploadImg()
         const payload = {
+            title: draft.value.title,
             slug: draft.value.title.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9\s-]/g, ''),
             category_id: draft.value.category,
             cover_image: draft.value?.cover_image,
@@ -35,7 +36,6 @@ const handleAddStory = async () => {
 
 const uploadImg = async () => {
 const upImg = sate.base64ToBlob(take.value)
-
     try {
         const imgName = `${Date.now()}_${draft.value.cover_image}`;
         const { error } = await supabase.storage.from('cover').upload(imgName, upImg)
@@ -48,9 +48,10 @@ const upImg = sate.base64ToBlob(take.value)
     }
 }
 
-onMounted(story.fetchCategories)
+
+onMounted(()=>{story.fetchCategories(); auth.getUser()})
 </script>
-<template>
+<template>{{ auth.user?.id }}
     <section class="section">
         <div class="section__header">
             <div class="section__header__logo " style="width: 8rem;"><svg @click="$router.go(-1)"

@@ -1,24 +1,38 @@
+import type { IError } from "./IAuthRepository"
+
 export interface IStory {
-    id: number,
+    id: string,
     slug: string,
-    title: string,
     cover_image?: string,
+    title: string,
     created_at: string,
-    content_preview: string,
+    content: string,
     author: IAuthor,
     category: ICategory
+}
+
+export interface IPayloadStory {
+    slug?: string,
+    cover_image?: string,
+    title?: string,
+    content?: string,
+    category_id?: string,
 }
 
 export interface IAuthor {
     id: string,
     name: string,
-    profile_image: string
+    email: string,
+    avatar_link: string,
+    created_at: string,
+    is_admin: boolean
 }
 
 export interface ICategory {
     id: string,
     name: string,
-    slug: string
+    slug: string,
+    created_at: string
 }
 
 export interface IApiFormat<T> {
@@ -43,4 +57,7 @@ export interface IAuth {
 
 export interface typeIn {
     getCategory(): Promise<ICategory[]>
+    getDetailStory(): Promise<IStory>
+    getAllStories(): Promise<IStory[] | null>
+    updateStory(id: string,inData: IPayloadStory): Promise<IStory>
 }

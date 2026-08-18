@@ -235,12 +235,18 @@ export const useStateStore = defineStore("state", () => {
     return new Blob([ab], { type: mimeString });
   }
 
+  const getPath= (path:string, spliting:string) => {
+    const relativePath = path.split(`/${spliting}/`)
+    console.log(relativePath.length > 1 ? relativePath[1] : null);
+    return relativePath.length > 1 ? relativePath[1] : null
+  }
 
   return {
     base64ToBlob,
     activeModal,
     articles,
     formatted,
-    profile
+    profile,
+    getPath
   };
 });

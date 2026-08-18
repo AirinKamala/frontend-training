@@ -5,7 +5,7 @@
                 <img :src="profile?.profile_image" alt="">
             </picture>
             <div class="profile__head__des">
-                <h2>{{ auth.user?.identities?.[0]?.identity_data?.name}}
+                <h2>{{ auth.user?.identities?.[0]?.identity_data?.name }}
                     <span>{{ auth.user?.email }}</span>
                 </h2>
                 <p>{{ profile.about }}</p>
@@ -22,12 +22,12 @@
                 <button class="btn btn-accent" @click="navigateTo('/dashboard/create-story')">Write story</button>
             </div>
             <div class="mystory__content__story">
-                <div class="card" v-for="story in state.articles.slice(0, 4)" :key="story.id">
+                <div class="card" v-for="story in st.stories" :key="story.id">
                     <picture class="card__pic">
-                        <img :src="story?.image" loading="lazy" :alt="story?.title" class="card__pic__img">
+                        <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                     </picture>
                     <div class="wrap">
-                        <button class="btn-act" @click="() => { openModal('edit', story) }">
+                        <button class="btn-act" @click="navigateTo(`/dashboard/edit-story-${story.id}`)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-square-pen-icon lucide-square-pen">
@@ -36,7 +36,7 @@
                                     d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
                             </svg>
                         </button>
-                        <UiModal v-if="modalType === 'edit'" @close="closeModal">
+                        <!-- <UiModal v-if="modalType === 'edit'" @close="closeModal">
                             <h2>Edit story</h2>
                             <form action="" class="form">
                                 <label for="" class="form__label">Title</label>
@@ -54,11 +54,7 @@
                                 <img :src="modalData.image" alt="" style="height: 240px; width: 240px;">
 
                             </form>
-                            <div class="btn-wrap">
-                                <button class="btn-confirm" @click="closeModal">Yes</button><button
-                                    class="btn-cancel">Cancel</button>
-                            </div>
-                        </UiModal>
+                        </UiModal> -->
                         <button class="btn-act">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
@@ -81,7 +77,7 @@
                             <h2>Delete story</h2>
                             <p>Are you sure to delete this story</p>
                             <div class="btn-wrap">
-                                <button class="btn-confirm" @click="closeModal">Yes</button><button class="btn-cancel"
+                                <button class="btn-confirm" @click="deleteStory(story.id)">Yes</button><button class="btn-cancel"
                                     @click="closeModal">Cancel</button>
                             </div>
                         </UiModal>
@@ -89,10 +85,11 @@
 
                     <div class="card__body">
                         <h3 class="card__title">{{ story.title }}</h3>
-                        <p>{{ story.shortContent }}</p>
+                        <Tiptap :can-edit="false" v-model="story.content" v-if="story" />
+                        <!-- <p>{{ story?.content }}</p> -->
                         <div class="card__footer">
-                            <span class="card__footer__category">{{ story.category }}</span>
-                            <p>{{ state.formatted(story.createdDate) }}</p>
+                            <span class="card__footer__category">{{ story?.category?.name }}</span>
+                            <p>{{ state.formatted(story.created_at) }}</p>
                         </div>
                     </div>
                 </div>
@@ -104,27 +101,44 @@
 
 <script setup lang="ts">
 import UiModal from '~/components/ui/Modal.vue'
+import Tiptap from '~/components/ui/Tiptap.vue'
 const state = useStateStore()
 const profile = state.profile
+const st = useStoryStore()
+
 const auth = useUserStore()
 
-const { openModal, closeModal, modalData, modalType } = useModal()
-console.log(auth.user)
+const { openModal, closeModal, modalType } = useModal()
+const take = ref<any | null>(null)
 const draft = ref({
     id: 0,
     image: "",
     title: "",
-    shortContent:
+    content:
         "",
     authorAvatar: "",
     authorName: "",
     createdDate: "",
     category: "",
+    cover_image: ""
 },)
 
-onMounted(()=>{
-const auth = useUserStore()
-auth.getUser()
+
+const deleteStory = async (id: string) => {
+    try {
+        await st.deleterStory(id)
+        console.log('sudah delete');
+        closeModal()
+        st.getAllStories()
+    } catch (err: any) {
+        throw err
+    }
+}
+onMounted(() => {
+    const story = useStoryStore()
+    story.getAllStories()
+    const user = useUserStore()
+    user.getUser()
 })
 </script>
 
