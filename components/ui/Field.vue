@@ -130,7 +130,7 @@ const setLink = () => {
     closeModal()
 }
 const emit = defineEmits(['tip'])
-// const tp = ref('')
+const props = defineProps({'sett':{type: String, default: ''}} )
 onMounted(() => {
     editor.value = new Editor({
         extensions: [StarterKit,
@@ -142,9 +142,8 @@ onMounted(() => {
                 defaultProtocol: 'https'
             })
         ],
-        content: '',
+        content: props.sett ?? '',
         onUpdate({editor}) {
-            // tp.value = editor.getHTML()
             emit('tip', editor.getHTML())
         }
     })
