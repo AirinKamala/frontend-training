@@ -349,6 +349,7 @@ export const useStoryStore = defineStore('story', () => {
 
     ])
     const singleStory = ref<IStory | null>(null) 
+    const similiarStory = ref<IStory[] | null>(null)
     const categories = ref<ICategory[] | null>(null)
     const isLoading = ref(false)
     const errMes = ref<string | null>(null)
@@ -375,6 +376,20 @@ export const useStoryStore = defineStore('story', () => {
         singleStory.value = null
         try {
             const response = await storyRepo.getDetailStory(id)
+            if(!response) return
+            return singleStory.value = response
+        } catch (er:any) {
+            errMes.value = 'Failed fetch story'
+            throw er
+        } finally {isLoading.value = false}
+    }
+
+    async function getDetailStoryBySlug(slug:string) {
+        isLoading.value = true
+        errMes.value = null
+        singleStory.value = null
+        try {
+            const response = await storyRepo.getDetailStoryBySlug(slug)
             if(!response) return
             return singleStory.value = response
         } catch (er:any) {
@@ -421,6 +436,20 @@ export const useStoryStore = defineStore('story', () => {
         }
     }
 
+    async function getSimiliarStory(catId:string, slug:string) {
+        isLoading.value = true
+        errMes.value = null
+        similiarStory.value = null
+        try {
+            const response = await storyRepo.getSimiliarStory(catId, slug)            
+            similiarStory.value = response
+        } catch (err:any) {
+            errMes.value = err.message
+            throw err
+        }
+
+    }
+
     async function fetchCategories() {
         isLoading.value = true
         errMes.value = null
@@ -434,6 +463,6 @@ export const useStoryStore = defineStore('story', () => {
     }
 
     return {
-        stories, addStory, fetchCategories, categories, getDetailStory, getAllStories, singleStory, updateStory, isLoading, deleterStory
+        stories, addStory, fetchCategories, categories, getDetailStory, getAllStories, singleStory, updateStory, isLoading, deleterStory, getSimiliarStory,getDetailStoryBySlug, similiarStory
     }
 })

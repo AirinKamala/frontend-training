@@ -1,63 +1,37 @@
 <template>
 
-    <div class="breadCrumb">
-        home / all story
-    </div>
-
-    <section class="shead">
-        <p class="shead__date">{{ state.formatted(story.createdDate) }}</p>
+    <UiBreadcrumb :bpath="routes.path" />
+    <section class="shead" v-if="story">
+        <p class="shead__date">{{ state.formatted(story.created_at) }}</p>
         <h1>{{ story.title }}</h1>
-        <div class="avatar"><img :src="story?.authorAvatar" alt=""><span>{{ story.authorName }}</span></div>
+        <div class="avatar"><img :src="story?.author?.avatar_link || story.cover_image" alt=""><span>{{ story?.author?.name }}</span></div>
     </section>
-    <section class="scontent">
-        <picture class="scontent__pic"><img :src="story.image" alt=""></picture>
-        <div class="scontent__des">&emsp; {{ story.shortContent }}
-            <br>
-            <br>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Quasi, molestiae dolore quod autem deleniti molestias quia doloribus ipsam exercitationem eos, praesentium
-            commodi consectetur non et aliquam. Consequuntur deleniti laudantium voluptates?
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora culpa illo ducimus magni laborum
-            architecto nam, soluta debitis itaque, corporis placeat aspernatur alias? Ex doloremque pariatur eius
-            minima, nihil maiores.
-            <br>
-            <br>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Quasi, molestiae dolore quod autem deleniti molestias quia doloribus ipsam exercitationem eos, praesentium
-            commodi consectetur non et aliquam. Consequuntur deleniti laudantium voluptates?
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora culpa illo ducimus magni laborum
-            architecto nam, soluta debitis itaque, corporis placeat aspernatur alias? Ex doloremque pariatur eius
-            minima, nihil maiores.
-            <br>
-            <br>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Quasi, molestiae dolore quod autem deleniti molestias quia doloribus ipsam exercitationem eos, praesentium
-            commodi consectetur non et aliquam. Consequuntur deleniti laudantium voluptates?
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora culpa illo ducimus magni laborum
-            architecto nam, soluta debitis itaque, corporis placeat aspernatur alias? Ex doloremque pariatur eius
-            minima, nihil maiores.
-
-            <br>
-            <br>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Quasi, molestiae dolore quod autem deleniti molestias quia doloribus ipsam exercitationem eos, praesentium
-            commodi consectetur non et aliquam. Consequuntur deleniti laudantium voluptates?
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora culpa illo ducimus magni laborum
-            architecto nam, soluta debitis itaque, corporis placeat aspernatur alias? Ex doloremque pariatur eius
-            minima, nihil maiores.
-        </div>
+    <section class="scontent" v-if="story">
+        <picture class="scontent__pic"><img :src="story.cover_image" alt=""></picture>
+        <Tiptap :canEdit="false" v-model="story.content" v-if="story"/>
     </section>
-
-    <HomeByCategory title="Similiar Story" :stories="state.articles.slice(0, 3)" variant="flex" :isExplore="false" />
-
+    <HomeByCategory title="Similiar Story" :stories="stories.similiarStory ?? []" variant="flex" :isExplore="false" />
 
 </template>
 
 <script setup lang="ts">
 import HomeByCategory from '~/components/pages/HomeByCategory.vue';
+import Tiptap from '~/components/ui/Tiptap.vue';
 
 const state = useStateStore()
-const story = state.articles[0]
+const stories = useStoryStore()
+const story = stories.singleStory
+const routes = useRoute()
+
+
+
+onMounted(async () => {
+    const slug = String(routes.params.slug)
+    await stories.getDetailStoryBySlug(slug)
+    const catId = String(stories.singleStory?.category.id)
+    await stories.getSimiliarStory(catId, slug)
+
+})
 </script>
 <style lang="scss" scoped>
 .breadCrumb {
@@ -102,14 +76,15 @@ const story = state.articles[0]
 
 @media (width > $md) {
     .scontent {
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
 
         &__pic {
-            flex: 1;
+            grid-column: span 1 / span 3;
         }
 
         &__des {
-            flex: 2;
+            grid-column: span 2 / span 3;
         }
     }
 }

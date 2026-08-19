@@ -7,7 +7,7 @@ export interface IStory {
     title: string,
     created_at: string,
     content: string,
-    author: IAuthor,
+    author?: IAuthor,
     category: ICategory
 }
 
@@ -22,10 +22,10 @@ export interface IPayloadStory {
 export interface IAuthor {
     id: string,
     name: string,
-    email: string,
-    avatar_link: string,
-    created_at: string,
-    is_admin: boolean
+    email?: string,
+    avatar_link?: string,
+    created_at?: string,
+    is_admin?: boolean
 }
 
 export interface ICategory {
@@ -59,5 +59,6 @@ export interface typeIn {
     getCategory(): Promise<ICategory[]>
     getDetailStory(): Promise<IStory>
     getAllStories(): Promise<IStory[] | null>
+    getSimiliarStores(): Promise<IStory[] | null>
     updateStory(id: string,inData: IPayloadStory): Promise<IStory>
 }

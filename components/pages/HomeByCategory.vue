@@ -1,5 +1,6 @@
 <template>
-    <section class="section">
+    <div v-if="!props.stories">404</div>
+    <section class="section" v-if="props.stories">
         <div class="section__header">
             <h2 class="section__title">{{ props.title }}</h2>
             <button v-if="isExplore" class="section__btn">Explore more &rarr;</button>
@@ -10,12 +11,12 @@
                     <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                 </picture>
                 <div class="card__body">
-                    <h3 class="card__title" v-html="story?.title"></h3>
-                    <Tiptap v-if="story" style="scroll-behavior: auto;" :can-edit="false" v-model="story.content_preview" />
+                    <h3 class="card__title" @click="navigateTo(`/story/${story.slug}`)">{{ story.title }}</h3>
+                    <Tiptap v-if="story" style="scroll-behavior: auto;" :can-edit="false" v-model="story.content" />
                     <div class="card__footer">
-                        <div class="avatar"><img :src="story?.author.profile_image" alt="avatar"
-                                style="border-radius: 100%; margin: 4px;"><span>{{ story?.author.name }}</span></div>
-                        <p>{{ story?.created_at }}</p>
+                        <div class="avatar"><img :src="story?.author?.avatar_link" alt="avatar"
+                                style="border-radius: 100%; margin: 4px;"><span>{{ story?.author?.name }}</span></div>
+                        <p>{{ state.formatted(story?.created_at) }}</p>
                     </div>
                 </div>
             </div>
@@ -130,15 +131,16 @@
 }
 </style>
 
-<script setup lang="ts">
+<script setup lang="ts">null
 import type { IStory } from '~/types/typeIn';
 import Tiptap from '../ui/Tiptap.vue';
+import type { PropType } from 'vue';
 
 const state = useStateStore()
 const props = defineProps({
 
     title: { type: String, required: true },
-    stories: { type: Array<IStory> || [], required: true },
+    stories: { type: Array as PropType<IStory[] | null>, required: true },
     variant: { type: String, required: true, value: ["grid", "flex"] },
     isExplore: { type: Boolean, default: true }
 })
