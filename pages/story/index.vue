@@ -1,9 +1,6 @@
 <template>
     <h1>All story</h1>
-    <div class="breadCrumb">
-        home / all story
-    </div>
-
+    <UiBreadcrumb :bpath="routes.path" />
     <div class="filter">
         <div class="filter__start">
 
@@ -48,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-
+const routes = useRoute()
 const state = useStateStore()
 const draft = ref({
     sort: 'asc',
@@ -60,13 +57,7 @@ const draft = ref({
 </script>
 
 <style lang="scss" scoped>
-.breadCrumb {
-    background-color: $accent-light;
-    padding: $padd;
-    margin: 10px 0;
-    color: $accent;
 
-}
 
 .filter {
     margin-top: 2rem;

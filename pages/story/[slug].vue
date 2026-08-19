@@ -20,7 +20,7 @@ import Tiptap from '~/components/ui/Tiptap.vue';
 
 const state = useStateStore()
 const stories = useStoryStore()
-const story = stories.singleStory
+const story = computed(()=>stories.singleStory)
 const routes = useRoute()
 
 
@@ -29,7 +29,7 @@ onMounted(async () => {
     const slug = String(routes.params.slug)
     await stories.getDetailStoryBySlug(slug)
     const catId = String(stories.singleStory?.category.id)
-    await stories.getSimiliarStory(catId, slug)
+     stories.getSimiliarStory(catId, slug)
 
 })
 </script>

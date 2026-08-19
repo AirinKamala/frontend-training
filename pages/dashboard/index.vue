@@ -22,7 +22,7 @@
                 <button class="btn btn-accent" @click="navigateTo('/dashboard/create-story')">Write story</button>
             </div>
             <div class="mystory__content__story">
-                <div class="card" v-for="story in st.stories" :key="story.id">
+                <div class="card" v-for="story in st.stories" :key="story.id" @click="navigateTo(`/story/${story.slug}`)">
                     <picture class="card__pic">
                         <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                     </picture>

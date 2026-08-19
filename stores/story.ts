@@ -433,6 +433,8 @@ export const useStoryStore = defineStore('story', () => {
         } catch (err: any) {
             errMes.value = err.message
             throw err
+        } finally {
+            isLoading.value = false
         }
     }
 
@@ -446,6 +448,8 @@ export const useStoryStore = defineStore('story', () => {
         } catch (err:any) {
             errMes.value = err.message
             throw err
+        } finally {
+            isLoading.value = false
         }
 
     }
