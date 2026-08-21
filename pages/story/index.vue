@@ -5,36 +5,37 @@
         <div class="filter__start">
 
 
-            <select class="filter__start__cat" for="sort" name="sort" id="sort" v-model="draft.sort">
-                <option value="asc">Order by Newest</option>
-                <option value="desc">Order by Oldest</option>
+            <select class="filter__start__cat" for="sort" name="sort" id="sort" v-model="state.filterParams.asc">
+                <option :value="true">Order by Newest</option>
+                <option :value="false">Order by Oldest</option>
             </select>
 
 
 
-            <select class="filter__start__cat" for="sort" name="sort" id="sort" " v-model="draft.cat">
-                <option value="romance"> Genre Romance</option>
-                <option value="comedy"> Genre Comedy</option>
+            <select class="filter__start__cat" for="sort" name="sort" id="sort" v-model="state.filterParams.cat">
+                <option value=""> All genre</option>
+                <option v-for="cat in stories.categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
             </select>
 
         </div>
         <div class="filter__end">
-            <UiSearch v-model="draft.q" />
-        </div> 
+            <UiSearch v-model="state.filterParams.query" />
+        </div>
     </div>
+    
     <section class="wrapper">
         <div class="story card" v-for="story in state.articles" :key="story.id">
             <picture class="card__pic story__pic">
-                <img :src="story?.image" loading="lazy" :alt="story?.title" class="card__pic__img">
+                <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
             </picture>
             <h3 class="card__title">{{ story.title }}</h3>
-            <p>{{ story.shortContent }}</p>
+           <UiTiptap :can-edit="false" v-model="story.content" />
             <div class="card__footer">
-                <div class="avatar"><img :src="story.authorAvatar" alt="avatar"
-                        style="border-radius: 100%; margin: 4px;"><span>{{ story.authorName }}</span></div>
+                <div class="avatar"><img :src="story.author?.avatar_link" alt="avatar"
+                        style="border-radius: 100%; margin: 4px;"><span>{{ story.author?.name }}</span></div>
                 <div class="card__footer__end">
-                    <span class="card__footer__date">{{ state.formatted(story.createdDate) }}</span>
-                    <span class="card__footer__category">{{ story.category }}</span>
+                    <span class="card__footer__date">{{ state.formatted(story.created_at) }}</span>
+                    <span class="card__footer__category">{{ story.category.name }}</span>
 
                 </div>
             </div>
@@ -47,24 +48,31 @@
 <script setup lang="ts">
 const routes = useRoute()
 const state = useStateStore()
-const draft = ref({
-    sort: 'asc',
-    cat: 'romance',
-    q: ''
+const stories = useStoryStore()
 
+onMounted(async () => {
+    const routes = useRoute()
+    const st = useStateStore()
+    const stories = useStoryStore()
+    st.filterParams = {
+        query: String(routes.query.search || ''),
+        cat: String(routes.query.category || ''),
+        asc: Boolean(routes.query.order)
+    }
+    await st.filteredStory(st.filterParams)
+
+    await stories.fetchCategories()
 })
-// const filtered 
 </script>
 
 <style lang="scss" scoped>
-
-
 .filter {
     margin-top: 2rem;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
     display: grid;
+
     &__start {
         gap: 10px;
         display: flex;
@@ -72,18 +80,18 @@ const draft = ref({
 
         &__cat {
             border: 1px solid gray;
-            padding: .5rem;
-
-            background-color:white;
+            padding: 1rem .5rem;
+            background-color: white;
             width: 100%;
+            min-width: 8rem;
+            height: 3rem;
         }
     }
     &__end {
         width: 100%;
-        // justify-items: end;
     }
 
-    
+
 
 }
 

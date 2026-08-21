@@ -1,7 +1,6 @@
 <template>
-    <div class="breadCrumb">
-        <span v-for="item in breadCrumb" @click="async () => await router.push(item.path)" :key="item.path"
-            style="cursor: pointer; margin: 1rem; "> / <a  :href="item.path">{{ item.name }}</a></span>
+    <div class="bread">
+        <span v-for="item in breadCrumb" @click="navigateTo(item.path)" :key="item.path" class="bread__child"> / {{ item.name }}</span>
     </div>
 
 </template>
@@ -19,9 +18,21 @@ const breadCrumb = computed(() => {
 })
 </script>
 <style lang="scss" scoped>
-.breadCrumb {
+.bread {
     background-color: $accent-light;
     padding: $padd;
     margin: 10px 0;
+    &__child {
+        color: $accent;
+        font-weight: 700;
+        padding: .5rem .4rem;
+        cursor: pointer;   
+        &:hover, &:active{
+            background-color: $accent;
+            color: white;
+            transition: all .5s ease-in-out;
+        }
+    }
+
 }
 </style>

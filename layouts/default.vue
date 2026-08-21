@@ -7,6 +7,8 @@ const isAuthPage = computed(()=>{
     if(routes.path === '/login' || routes.hash === '/register') return '#eff5ec'
     return 'white'
 })
+
+
 </script>
 
 <template>

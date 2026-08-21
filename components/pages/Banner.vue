@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Search from '../ui/Search.vue';
+const state = useStateStore()
 
 </script>
 
@@ -10,7 +11,7 @@ import Search from '../ui/Search.vue';
         <h1 class="banner__h1">Welcome to Storytime</h1>
         <p class="banner_p">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur explicabo ipsum vitae
             deserunt voluptate</p>
-       <Search text="Search story"></Search>
+       <Search text="Search story" v-model="state.filterParams.query" @keydown.enter="navigateTo('/story')" />
         <picture class="banner__pic">
             <img src="/assets/images/banner.webp" alt="" class="banner__pic__img">
         </picture>
