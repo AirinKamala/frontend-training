@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
 import Modal from '~/components/ui/Modal.vue';
+import type { IAuthor } from '~/types/typeIn';
 const { openModal, closeModal, modalType } = useModal()
+defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null}})
 </script>
 
 <template>
@@ -10,10 +13,10 @@ const { openModal, closeModal, modalType } = useModal()
         <!-- goes to homepage -->
 
         <nav class="header__nav">
-            <picture class="header__nav__pic"><img src="/public/favicon.ico" alt="" class="header__nav__img"></picture>
+            <picture class="header__nav__pic"><img :src="userdata?.avatar_link" alt="" class="header__nav__img"></picture>
 
             <button class="header__nav__pro dropdown">
-                My Name &darr;
+                {{userdata?.name }} &darr;
                 <div class="dropdown__content">
                     <span class="">My profile</span>
                     <span @click="openModal('logout')" class="">Logout</span>

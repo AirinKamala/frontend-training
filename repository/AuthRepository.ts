@@ -1,5 +1,6 @@
 import type { Session, User } from "@supabase/supabase-js";
 import type { IAuthRepository, IRegister, ILogin, IError } from "~/types/IAuthRepository";
+import type { IAuthor } from "~/types/typeIn";
 
 export class AuthRepository implements IAuthRepository {
     private get supabase() {
@@ -60,10 +61,23 @@ export class AuthRepository implements IAuthRepository {
             return
     }
 
-    async getCurrentUser(): Promise<User | null> {
-        const {data: {user}, error} = await this.supabase.auth.getUser()
-        if(error) throw new Error(error.message)
-            return user
+    async getCurrentUser(email:string): Promise<IAuthor> {
+        const {data, error} = await this.supabase.from('users').select('*').eq('email', email).maybeSingle()
+        if (error) {
+            const mappedError:IError = {
+                status: String(error.code) || '400',
+                message: error.message
+            }
+            throw mappedError
+        }
+        if (!data) {
+            const mappedData:IError = {
+                status: '404',
+                message: `User ${email} not found`
+            }
+            throw mappedData
+        }
+        return data as IAuthor
     }
 
 }

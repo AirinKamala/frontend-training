@@ -5,8 +5,8 @@
                 <img :src="profile?.profile_image" alt="">
             </picture>
             <div class="profile__head__des">
-                <h2>{{ auth.user?.identities?.[0]?.identity_data?.name }}
-                    <span>{{ auth.user?.email }}</span>
+                <h2>{{ usert?.name}}
+                    <span>{{ usert?.email }}</span>
                 </h2>
                 <p>{{ profile.about }}</p>
             </div>
@@ -102,6 +102,7 @@
 <script setup lang="ts">
 import UiModal from '~/components/ui/Modal.vue'
 import Tiptap from '~/components/ui/Tiptap.vue'
+import type { IAuthor } from '~/types/typeIn'
 const state = useStateStore()
 const profile = state.profile
 const st = useStoryStore()
@@ -109,7 +110,7 @@ const st = useStoryStore()
 const auth = useUserStore()
 
 const { openModal, closeModal, modalType } = useModal()
-const take = ref<any | null>(null)
+const usert = ref<IAuthor | null>(null)
 const draft = ref({
     id: 0,
     image: "",
@@ -139,6 +140,7 @@ onMounted(() => {
     story.getAllStories()
     const user = useUserStore()
     user.getUser()
+    usert.value = user.userData
 })
 </script>
 

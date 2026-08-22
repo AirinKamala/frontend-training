@@ -58,8 +58,8 @@ const draft = ref({
 })
 const error = ref('')
 
-const handleLogin = () => {
-     auth.login(draft.value)
+const handleLogin = async() => {
+     await auth.login(draft.value)
      if(!auth.user || !auth.session) return
      navigateTo('/dashboard')
 }

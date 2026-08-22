@@ -9,7 +9,6 @@ export interface IRegister {
 export interface ILogin {
     email: string,
     password: string,
-
 }
 
 export interface IAuthRes {
@@ -26,7 +25,6 @@ export interface IAuthRepository {
     register(credentials: IRegister): Promise <IAuthRes >
     login(payload: ILogin): Promise <IAuthRes >
     logout() : Promise<void>
-    getCurrentUser(): Promise <User| null>
-    getCurrentSession() : Promise<Session | null>
+    getCurrentSession(): Promise<Session | null>
 
 }
