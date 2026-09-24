@@ -64,7 +64,7 @@
                                     d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
                             </svg>
                         </button>
-                        <button class="btn-act" @click="openModal('delete', story)"><svg
+                        <button class="btn-act" @click="e=> {e.stopPropagation() ;openModal('delete', story)}"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
@@ -78,7 +78,7 @@
                             <h2>Delete story</h2>
                             <p>Are you sure to delete this story</p>
                             <div class="btn-wrap">
-                                <button class="btn-confirm" @click="deleteStory(story.id)">Yes</button><button class="btn-cancel"
+                                <button class="btn-confirm" @click="deleteStory(modalData.id, modalData.cover_image)">Yes</button><button class="btn-cancel"
                                     @click="closeModal">Cancel</button>
                             </div>
                         </UiModal>
@@ -107,13 +107,14 @@ import type { IAuthor } from '~/types/typeIn'
 const state = useStateStore()
 const st = useStoryStore()
 
-const { openModal, closeModal, modalType } = useModal()
+const { openModal, closeModal, modalType, modalData } = useModal()
 const usert = ref<IAuthor | null>(null)
 
 
-const deleteStory = async (id: string) => {
+const deleteStory = async (id: string, cover_image?: string) => {
+    console.log(id, cover_image);
     try {
-        await st.deleterStory(id)
+        await st.deleteStory(id, cover_image)
         console.log('sudah delete');
         closeModal()
         st.getAllStories()

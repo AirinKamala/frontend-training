@@ -131,16 +131,26 @@ export class StoryRepository {
         return data
     }
 
-    async deleterStory(id: string): Promise<any> {
-        const { error } = await this.supabase.from('stories').delete().eq('id', id)
-        if (error) {
-            const mappedError: IError = {
-                status: error.code,
-                message: error.message
-            }
-            throw error
+    async deleteStory(id: string, imagePath?: string | null): Promise<void> {
+    if (imagePath) {
+        const parts = imagePath.split(`/${this.bucketName}/`)
+        const cleanPath = parts.length > 1 ? parts[1] : null
+        console.log("clean img");
+        if (cleanPath) {
+            await this.supabase.storage.from(this.bucketName).remove([cleanPath])
         }
     }
+
+    const { error } = await this.supabase.from('stories').delete().eq('id', id)
+    if (error) {
+        const mappedError: IError = {
+            status: error.code,
+            message: error.message
+        }
+        throw mappedError
+    }
+    
+}
 
     async getSimiliarStory(catId:string, slug:string) :Promise<IStory[] | null> {
         const { data, error } = await this.supabase.from('stories').select('*, category: categories(id,name), author: users(id, name, avatar_link)').eq('category_id', catId).neq('slug', slug).limit(3)

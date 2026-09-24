@@ -424,11 +424,11 @@ export const useStoryStore = defineStore('story', () => {
         } finally { isLoading.value = false}
     }
 
-    async function deleterStory(id:string) {
+    async function deleteStory(id:string, cover_image?: string) {
         isLoading.value = true
         errMes.value = null
         try {
-            const response = await storyRepo.deleterStory(id)            
+            const response = await storyRepo.deleteStory(id, cover_image)            
             return response
         } catch (err: any) {
             errMes.value = err.message
@@ -467,6 +467,6 @@ export const useStoryStore = defineStore('story', () => {
     }
 
     return {
-        stories, addStory, fetchCategories, categories, getDetailStory, getAllStories, singleStory, updateStory, isLoading, deleterStory, getSimiliarStory,getDetailStoryBySlug, similiarStory
+        stories, addStory, fetchCategories, categories, getDetailStory, getAllStories, singleStory, updateStory, isLoading, deleteStory, getSimiliarStory,getDetailStoryBySlug, similiarStory
     }
 })

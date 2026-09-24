@@ -3,6 +3,7 @@ import type { PropType } from 'vue';
 import Modal from '~/components/ui/Modal.vue';
 import type { IAuthor } from '~/types/typeIn';
 const { openModal, closeModal, modalType } = useModal()
+const {logout} = useUserStore()
 defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null}})
 </script>
 
@@ -28,7 +29,7 @@ defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null
                         <p>Are you sure want to logout?</p>
                         <div class="btn-wrap">
                             <button class="btn-cancel" @click="closeModal">Cancel</button>
-                            <button class="btn-confirm">Logout</button>
+                            <button class="btn-confirm" @click="()=>{logout(); closeModal() }">Logout</button>
                         </div>
                     </Modal>
                 </div>

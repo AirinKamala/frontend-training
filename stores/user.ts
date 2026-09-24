@@ -71,7 +71,12 @@ export const useUserStore = defineStore('user', () => {
         try {
             await authRepo.logout()
             user.value = null
+            userData.value = null
             session.value = null
+            localStorage.removeItem('user_info')
+            localStorage.removeItem("users")
+            await navigateTo('/login')
+
         } catch (err: any) {
             errorMes.value = err.message
             throw err
