@@ -16,9 +16,7 @@ export const useUserStore = defineStore('user', () => {
             const userAuth = localStorage.getItem('users')
 
             if(userInfo) userData.value = JSON.parse(userInfo)|| null
-            if(userAuth) userData.value = JSON.parse(userAuth)|| null
-            console.log(userAuth)
-            console.log(userInfo);
+            if(userAuth) user.value = JSON.parse(userAuth)|| null
         } catch (err: any) {
             throw err.message
         }
@@ -92,7 +90,23 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
+    async function updateProfile(datas:IAuthor, oldImage:string |null) {
+        isLoading.value = true
+        errorMes.value = null
+        try {
+            console.log(datas);
+            const response = await authRepo.updateUserProfile(datas, oldImage)      
+            localStorage.setItem('user_info', JSON.stringify(response))
+            return response
+        } catch (err:any) {
+            errorMes.value = err.message
+            throw err
+        } finally{
+            isLoading.value = false
+        }
+    }
+
     return {
-        register, login, logout, user, session, errorMes, isLoading, getUser, userData
+        register, login, logout, user, session, errorMes, isLoading, getUser, userData, updateProfile
     }
 })

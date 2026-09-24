@@ -24,6 +24,7 @@ export interface IAuthor {
     name: string,
     email?: string,
     avatar_link?: string,
+    about?: string,
     created_at?: string,
     is_admin?: boolean
 }

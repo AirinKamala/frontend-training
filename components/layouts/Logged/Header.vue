@@ -13,12 +13,15 @@ defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null
         <!-- goes to homepage -->
 
         <nav class="header__nav">
-            <picture class="header__nav__pic"><img :src="userdata?.avatar_link" alt="" class="header__nav__img"></picture>
+            <picture class="header__nav__pic">
+                <img v-if="userdata?.avatar_link" :src="userdata.avatar_link" alt="" class="header__nav__pic__img">
+                <div v-else class="header__nav__pic__initial">{{ userdata?.name.at(0) }}</div>
+            </picture>
 
             <button class="header__nav__pro dropdown">
                 {{userdata?.name }} &darr;
                 <div class="dropdown__content">
-                    <span class="">My profile</span>
+                    <span class="" @click="navigateTo('/dashboard')">My profile</span>
                     <span @click="openModal('logout')" class="">Logout</span>
                      <Modal v-if="modalType === 'logout'" @close="closeModal">
                         <h2>Logout</h2>
@@ -62,6 +65,15 @@ defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null
             &__img {
                 object-fit: cover;
             }
+            &__initial{
+                background-color: $accent-light;
+                color: $accent;
+                font-size: 24pt;
+                font-weight: 700;
+                justify-content: center;
+                display: flex;
+                width: 100%;
+            }
 
         }
 
@@ -76,7 +88,7 @@ defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null
                 min-width: 72px;
                 z-index: 1;
                 display: none;
-                margin: 1rem 4px 0 -2rem;
+                margin: 1rem 0 0 -2rem;
                 position: absolute;
                 background-color: white;
                 border: 1px solid rgba(128, 128, 128, 0.644);

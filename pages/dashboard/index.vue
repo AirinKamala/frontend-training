@@ -2,16 +2,17 @@
     <section class="profile">
         <div class="profile__head">
             <picture class="profile__head__pic">
-                <img :src="profile?.profile_image" alt="">
+                <img :src="usert?.avatar_link" alt="Avatar" v-if="usert">
             </picture>
             <div class="profile__head__des">
                 <h2>{{ usert?.name}}
                     <span>{{ usert?.email }}</span>
                 </h2>
-                <p>{{ profile.about }}</p>
+                <p><UiTiptap :can-edit="false" v-model="usert.about" v-if="usert" /></p>
+                
             </div>
         </div>
-        <button class="btn btn-accent">Edit profile</button>
+        <button class="btn btn-accent" @click="navigateTo('/dashboard/me')">Edit profile</button>
     </section>
     <section class="mystory">
         <h2>My Story</h2>
@@ -104,25 +105,10 @@ import UiModal from '~/components/ui/Modal.vue'
 import Tiptap from '~/components/ui/Tiptap.vue'
 import type { IAuthor } from '~/types/typeIn'
 const state = useStateStore()
-const profile = state.profile
 const st = useStoryStore()
-
-const auth = useUserStore()
 
 const { openModal, closeModal, modalType } = useModal()
 const usert = ref<IAuthor | null>(null)
-const draft = ref({
-    id: 0,
-    image: "",
-    title: "",
-    content:
-        "",
-    authorAvatar: "",
-    authorName: "",
-    createdDate: "",
-    category: "",
-    cover_image: ""
-},)
 
 
 const deleteStory = async (id: string) => {

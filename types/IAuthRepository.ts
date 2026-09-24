@@ -1,5 +1,6 @@
 
 import type {User, Session} from '@supabase/supabase-js'
+import type { IAuthor } from './typeIn'
 
 export interface IRegister {
     email: string,
@@ -26,5 +27,5 @@ export interface IAuthRepository {
     login(payload: ILogin): Promise <IAuthRes >
     logout() : Promise<void>
     getCurrentSession(): Promise<Session | null>
-
+    updateUserProfile(payload:IAuthor, oldImage:string| null): Promise<IAuthor>
 }
