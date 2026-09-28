@@ -5,37 +5,43 @@
             <h2>Latest Story</h2>
             <button>Explore more &rarr;</button>
         </div>
-        <div class="latest__wrapper">
-            <div class="card" v-for="art in articles" :key="art.id">
+        <div class="latest__wrapper" v-if="stories">
+            <div class="card" v-for="art in stories" :key="art.id">
                 <picture class="card__pic">
-                    <img class="card__pic__img" alt="" loading="lazy" :src="art.image">
+                    <img class="card__pic__img" alt="" loading="lazy" :src="art.cover_image">
                 </picture>
                 <h3 class="card__title">{{ art.title }}</h3>
-                <p class="card__des">&emsp; {{ art.shortContent }}</p>
+                <UiTiptap :can-edit="false" v-model="art.content" class="card__des"/>
                 <div class="card__footer">
-                    <div class="card__footer_start">
-                        <img :src="art.authorAvatar" :alt="art.authorName" style="border-radius: 100%;">
-                        <p>{{ art.authorName }}</p>
+                    <div class="card__footer_start avatar">
+                        <img :src="art.author?.avatar_link" :alt="art.author?.name" style="border-radius: 100%;">
+                        <p>{{ art.author?.name }}</p>
                     </div>
 
                     <div class="card__footer__end">
-                        <span class="card__footer__date">{{formatted( art.createdDate)}}</span>
-                        <span class="card__footer__category">{{ art.category }}</span>
-                        
+                        <span class="card__footer__date">{{ formatted(art.created_at) }}</span>
+                        <span class="card__footer__category">{{ art.category.name }}</span>
+
                     </div>
                 </div>
 
             </div>
         </div>
+
+        <h1 v-else>Loading....</h1>
     </section>
+
 
 </template>
 
 <script setup lang="ts">
+import type { PropType } from 'vue';
 import { useStateStore } from '~/stores/state';
+import type { IStory } from '~/types/typeIn';
+const { formatted } = useStateStore()
+defineProps({ stories: { type: Array as PropType<IStory[] | []>, default: [] } })
 
-const { articles,formatted } = useStateStore()
-
+const cutStory = (text:string)=> text.length > 0 ? text.substring(0,100) +'...' : text
 
 </script>
 

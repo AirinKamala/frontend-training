@@ -6,13 +6,14 @@
             <button v-if="isExplore" class="section__btn">Explore more &rarr;</button>
         </div>
         <div :class="`section__${props.variant}`">
-            <div class="card" v-for="story in props.stories" :key="story?.id">
+            <div class="card" v-for="story in props.stories" :key="story?.id" @click="navigateTo(`/story/${story.slug}`)">
                 <picture class="card__pic">
                     <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                 </picture>
                 <div class="card__body">
                     <h3 class="card__title" @click="navigateTo(`/story/${story.slug}`)">{{ story.title }}</h3>
-                    <Tiptap v-if="story" style="scroll-behavior: auto;" :can-edit="false" v-model="story.content" />
+                    <Tiptap v-if="story" style="scroll-behavior: auto;" :can-edit="false" v-model="story.content" class="card__des" />
+
                     <div class="card__footer">
                         <div class="avatar"><img :src="story?.author?.avatar_link" alt="avatar"
                                 style="border-radius: 100%; margin: 4px;"><span>{{ story?.author?.name }}</span></div>
@@ -50,7 +51,8 @@
 
     &__flex {
         margin-top: 2rem;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         overflow-x: auto;
         gap: 36px;
 

@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import Search from '../ui/Search.vue';
 const state = useStateStore()
+const auth = useUserStore()
 
+const name = computed(()=>auth.userData?.name)
 </script>
 
 
 <template>
     <section class="banner">
         
-        <h1 class="banner__h1">Welcome to Storytime</h1>
+        <h1 class="banner__h1" v-if="name">Hi! {{ name }}</h1>
+        <h1 class="banner__h1" v-else>Welcome to Storytime</h1>
         <p class="banner_p">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur explicabo ipsum vitae
             deserunt voluptate</p>
        <Search text="Search story" v-model="state.filterParams.query" @keydown.enter="navigateTo('/story')" />
