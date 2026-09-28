@@ -8,23 +8,15 @@ const routes = useRoute()
 const st = useUserStore()
 
 const isAuthPage = computed(() => routes.path === "/login" || routes.path === "/register")
-onMounted(() => {
-    const mainEl = document.getElementById("main")
-    watch(
-        isAuthPage, (isAuth) => {
-            if (!isAuth) { mainEl?.classList.add('w-6xl') }
-            else { mainEl?.classList.remove('w-6xl') }
-            
-        }, {immediate: true}
-    )
-})
 const bgColor = computed(() => isAuthPage.value ? '#eff5ec' : 'white')
 </script>
 
 <template>
     <Lheader v-if="!!st.userData" :userdata="st.userData" />
     <Header v-else />
-    <main :style="`background-color: ${bgColor};`" id="main">
+    <main 
+        :class="{'w-6xl' : !isAuthPage}"
+        :style="`background-color: ${bgColor};`" id="main">
         <slot></slot>
     </main>
     <Footer></Footer>

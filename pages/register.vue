@@ -35,7 +35,7 @@
                 <p class="form__error" v-if="actionError">{{ actionError }}</p> <!--add var error-->
 
                 <label><input type="checkbox" name="showPass" v-model="pass"> Show Password</label>
-                <p class="form__error" v-if="auth.errorMes">{{ auth.errorMes }}</p>
+                <!-- <p class="form__error" v-if="auth.errorMes">{{ auth.errorMes }}</p> -->
 
                 <button type="submit" class="form__btn">{{ auth.isLoading ?
                     'Loading...' : 'Login' }}</button>
