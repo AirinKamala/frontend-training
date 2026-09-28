@@ -9,7 +9,7 @@ export class StoryRepository {
     private bucketName = 'cover'
     state = useStateStore()
     async addStory(cred: any): Promise<any> {
-        const { data, error } = await this.supabase.from('stories').insert({ ...cred })
+        const { data, error } = await this.supabase.from('stories').insert({ ...cred }).select()
         if (error) {
             const mappedError: IError = {
                 status: String(error.code) || '400',
@@ -17,7 +17,7 @@ export class StoryRepository {
             }
             throw mappedError
         }
-        return data
+        return {data}
     }
 
     async getAllStories(): Promise<IStory[] | null> {

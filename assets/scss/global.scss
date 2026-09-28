@@ -209,3 +209,23 @@ section {
   color: $accent;
   border: 1px solid $accent;
 }
+
+
+
+.space {
+  &-x {
+    & > * + * {
+      --tw-space-x-reverse: 0;
+      margin-right: calc(#{$custom-space-amount} * var(--tw-space-x-reverse));
+      margin-left: calc(#{$custom-space-amount} * (1 - var(--tw-space-x-reverse)));
+    }
+  }
+
+  &-y {
+    & > * + * {
+      --tw-space-y-reverse: 0;
+      margin-top: calc(#{$custom-space-amount} * (1 - var(--tw-space-y-reverse)));
+      margin-bottom: calc(#{$custom-space-amount} * var(--tw-space-y-reverse));
+    }
+  }
+}

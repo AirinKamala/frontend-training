@@ -141,7 +141,6 @@ const crop = () => {
     border-radius: 10px;
     width: 100%;
     max-width: 600px;
-        border: $border-gray;
 
     &-profile {
         position: relative;

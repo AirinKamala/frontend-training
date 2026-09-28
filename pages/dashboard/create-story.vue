@@ -28,17 +28,16 @@ const handleAddStory = async () => {
 
         const { data } = await story.addStory(payload)
         console.log(data);
-        if(!data) return
-        
+        if (!data) return
+
         await navigateTo('/dashboard')
     } catch (err: any) {
-        console.log(err);
-        throw err
+        console.error("Caught error in UI:", err);
     }
 }
 
 const uploadImg = async () => {
-const upImg = sate.base64ToBlob(take.value)
+    const upImg = sate.base64ToBlob(take.value)
     try {
         const imgName = `${Date.now()}_${draft.value.cover_image}`;
         const { error } = await supabase.storage.from('cover').upload(imgName, upImg)
@@ -52,7 +51,7 @@ const upImg = sate.base64ToBlob(take.value)
 }
 
 
-onMounted(()=>{story.fetchCategories(); auth.getUser()})
+onMounted(() => { story.fetchCategories(); auth.getUser() })
 </script>
 <template>
     <section class="section">
@@ -75,8 +74,10 @@ onMounted(()=>{story.fetchCategories(); auth.getUser()})
                 <option v-for="cat in story.categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
             </select>
 
-            <UiField @tip="draft.content = $event"/>
-            <UiCrop @named="draft.cover_image = $event" @taken="take = $event" />
+            <UiField @tip="draft.content = $event" />
+            <div style="border: 2px solid gray; border-radius:10px; max-width: 600px;">
+                <UiCrop @named="draft.cover_image = $event" @taken="take = $event" />
+            </div>
         </form>
         <UiButton type="accent" class="btn" @btn-click="handleAddStory">Submit</UiButton>
     </section>
@@ -87,8 +88,9 @@ onMounted(()=>{story.fetchCategories(); auth.getUser()})
     padding: $padd;
     border-radius: 10px;
 }
-.btn{
-    padding:  $padd;
+
+.btn {
+    padding: $padd;
     margin: 1rem 0;
     width: 12rem;
     justify-content: center;
