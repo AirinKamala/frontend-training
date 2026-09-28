@@ -86,7 +86,7 @@ onMounted(() => loadData())
             <UiField :sett="draft.content" @tip="draft.content = $event" />
             <UiCrop @named="draft.cover_image = $event" @taken="take = $event" :url="draft.cover_image" />
         </form>
-        <UiButton type="accent" class="btn" @btn-click="handleEdit">{{stories.isLoading ? 'Submit' : 'Loading....'}}</UiButton>
+        <UiButton type="accent" class="btn" @btn-click="handleEdit">{{stories.isLoading ?  'Loading....' : 'Submit' }}</UiButton>
 
     </section>
 </template>

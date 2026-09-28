@@ -27,10 +27,13 @@ const handleAddStory = async () => {
         }
 
         const { data } = await story.addStory(payload)
+        console.log(data);
         if(!data) return
-        navigateTo('/dashboard')
+        
+        await navigateTo('/dashboard')
     } catch (err: any) {
-        throw err.message
+        console.log(err);
+        throw err
     }
 }
 
@@ -51,13 +54,13 @@ const upImg = sate.base64ToBlob(take.value)
 
 onMounted(()=>{story.fetchCategories(); auth.getUser()})
 </script>
-<template>{{ auth.user?.id }}
+<template>
     <section class="section">
         <div class="section__header">
-            <div class="section__header__logo " style="width: 8rem;"><svg @click="$router.go(-1)"
+            <div class="section__header__logo" style="width: 8rem;"><svg @click="$router.go(-1)"
                     xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-chevron-left-icon lucide-chevron-left">
+                    class="lucide-chevron-left lucide-chevron-left-icon lucide">
                     <path d="m15 18-6-6 6-6" />
                 </svg></div>
             <h1>Create New Story</h1>

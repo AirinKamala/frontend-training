@@ -8,7 +8,7 @@
     </section>
     <section class="scontent" v-if="story">
         <picture class="scontent__pic"><img :src="story.cover_image" alt=""></picture>
-        <Tiptap :canEdit="false" v-model="story.content" v-if="story"/>
+        <Tiptap :canEdit="false" v-model="story.content" v-if="story" class="scontent__des"/>
     </section>
     <HomeByCategory title="Similiar Story" :stories="stories.similiarStory ?? []" variant="flex" :isExplore="false" />
 
@@ -84,6 +84,7 @@ onMounted(async () => {
         }
 
         &__des {
+            padding-top: 1rem;
             grid-column: span 2 / span 3;
         }
     }

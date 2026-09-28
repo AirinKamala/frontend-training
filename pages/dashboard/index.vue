@@ -5,11 +5,13 @@
                 <img :src="usert?.avatar_link" alt="Avatar" v-if="usert">
             </picture>
             <div class="profile__head__des">
-                <h2>{{ usert?.name}}
+                <h2>{{ usert?.name }}
                     <span>{{ usert?.email }}</span>
                 </h2>
-                <p><UiTiptap :can-edit="false" v-model="usert.about" v-if="usert" /></p>
-                
+                <p>
+                    <UiTiptap :can-edit="false" v-model="usert.about" v-if="usert" />
+                </p>
+
             </div>
         </div>
         <button class="btn btn-accent" @click="navigateTo('/dashboard/me')">Edit profile</button>
@@ -22,8 +24,10 @@
                 <p>Sed at erat et diam elitr sanctus rebum, stet diam.</p>
                 <button class="btn btn-accent" @click="navigateTo('/dashboard/create-story')">Write story</button>
             </div>
-            <div class="mystory__content__story">
-                <div class="card" v-for="story in st.stories" :key="story.id" @click="navigateTo(`/story/${story.slug}`)">
+            <p v-if="!stories || stories?.length === 0" class="mystory__content__story__nothing">There is any story you
+                write here</p>
+            <div class="mystory__content__story" v-else>
+                <div class="card" v-for="story in stories" :key="story.id" @click="navigateTo(`/story/${story.slug}`)">
                     <picture class="card__pic">
                         <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                     </picture>
@@ -64,7 +68,7 @@
                                     d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
                             </svg>
                         </button>
-                        <button class="btn-act" @click="e=> {e.stopPropagation() ;openModal('delete', story)}"><svg
+                        <button class="btn-act" @click="e => { e.stopPropagation(); openModal('delete', story) }"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
@@ -78,8 +82,9 @@
                             <h2>Delete story</h2>
                             <p>Are you sure to delete this story</p>
                             <div class="btn-wrap">
-                                <button class="btn-confirm" @click="deleteStory(modalData.id, modalData.cover_image)">Yes</button><button class="btn-cancel"
-                                    @click="closeModal">Cancel</button>
+                                <button class="btn-confirm"
+                                    @click="deleteStory(modalData.id, modalData.cover_image)">Yes</button><button
+                                    class="btn-cancel" @click="closeModal">Cancel</button>
                             </div>
                         </UiModal>
                     </div>
@@ -110,6 +115,7 @@ const st = useStoryStore()
 const { openModal, closeModal, modalType, modalData } = useModal()
 const usert = ref<IAuthor | null>(null)
 
+const stories = st.stories?.filter(e => e.author?.id === usert.value?.id)
 
 const deleteStory = async (id: string, cover_image?: string) => {
     console.log(id, cover_image);
@@ -137,6 +143,7 @@ onMounted(() => {
     align-items: center;
     justify-items: center;
     gap: 1rem;
+    margin: .5rem 0;
 
     &__head {
         display: grid;
@@ -186,53 +193,65 @@ onMounted(() => {
     }
 }
 
-.mystory__content {
-    display: grid;
-    justify-items: center;
-    gap: 1rem;
+.mystory {
+    margin: 2rem 0;
 
-    &__add {
-        gap: .5rem;
-        max-height: 12rem;
-        max-width: 20rem;
-        margin-top: 1rem;
-        padding: $padd;
-        border: 2px dashed gray;
+    &__content {
         display: grid;
         justify-items: center;
-
-    }
-
-    &__story {
-        display: grid;
         gap: 1rem;
-        grid-template-columns: repeat(1, minmax(1fr));
-    }
 
-    .card {
-        max-width: 48rem;
-        position: relative;
-
-        picture {
-            width: 100%;
-            height: 20rem;
+        &__add {
+            gap: .5rem;
+            max-height: 12rem;
+            max-width: 20rem;
+            margin-top: 1rem;
+            padding: $padd;
+            border: 2px dashed gray;
+            display: grid;
+            justify-items: center;
 
         }
 
-        .wrap {
-            position: absolute;
-            z-index: 30;
-            right: 10px;
-            top: 10px;
-            display: flex;
-            justify-content: space-around;
-            gap: 10px;
+        &__story {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(1, minmax(1fr));
 
-            .btn-act {
-                padding: .5rem;
-                border-radius: 10px;
-                border: none;
-                background-color: $accent;
+            &__nothing {
+                font-size: 2rem;
+                text-align: center;
+                color: #474747;
+                align-self: center;
+                width: inherit;
+            }
+        }
+
+        .card {
+            max-width: 48rem;
+            position: relative;
+
+            picture {
+                width: 100%;
+                height: 20rem;
+
+            }
+
+            .wrap {
+                position: absolute;
+                z-index: 30;
+                right: 10px;
+                top: 10px;
+                display: flex;
+                justify-content: space-around;
+                gap: 10px;
+
+                .btn-act {
+                    padding: .5rem;
+                    border-radius: 10px;
+                    border: none;
+                    background-color: $accent;
+                }
             }
         }
     }

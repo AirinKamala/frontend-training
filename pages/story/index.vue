@@ -22,14 +22,15 @@
             <UiSearch v-model="state.filterParams.query" />
         </div>
     </div>
-    
-    <section class="wrapper">
-        <div class="story card" v-for="story in state.articles" :key="story.id">
+<!-- {{ storyData }} -->
+    <p v-if="!storyData || storyData?.length === 0" class="notfound">There no matched articles</p>
+    <section class="wrapper" v-else>
+        <div class="story card" v-for="story in state.articles" :key="story.id" @click="navigateTo(`/story/${story.slug}`)">
             <picture class="card__pic story__pic">
                 <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
             </picture>
             <h3 class="card__title">{{ story.title }}</h3>
-           <UiTiptap :can-edit="false" v-model="story.content" />
+            <UiTiptap :can-edit="false" v-model="story.content" />
             <div class="card__footer">
                 <div class="avatar"><img :src="story.author?.avatar_link" alt="avatar"
                         style="border-radius: 100%; margin: 4px;"><span>{{ story.author?.name }}</span></div>
@@ -49,6 +50,8 @@
 const routes = useRoute()
 const state = useStateStore()
 const stories = useStoryStore()
+
+const storyData = computed(()=> state.articles ?? [] )
 
 onMounted(async () => {
     const routes = useRoute()
@@ -87,12 +90,18 @@ onMounted(async () => {
             height: 3rem;
         }
     }
+
     &__end {
         width: 100%;
     }
+}
 
-
-
+.notfound {
+    font-size: 2rem;
+    text-align: center;
+    color: #474747;
+    align-self: center;
+    width: inherit;
 }
 
 .wrapper {

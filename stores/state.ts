@@ -254,10 +254,9 @@ export const useStateStore = defineStore("state", () => {
   }
 
   const filteredStory = async (paramQuery: any) => {
-
     try {
       let query = supabase.from('stories').select('*, category: categories(*), author: users(id, name, avatar_link)').order('created_at', { ascending: paramQuery.asc })
-      if (paramQuery.query) { query = query.ilike('title', paramQuery.query) }
+      if (paramQuery.query && paramQuery.query.trim() !== '') {query = query.ilike('title', `%${paramQuery.query.trim()}%`)}
       if (paramQuery.cat) { query = query.eq('category_id', paramQuery.cat) }
       const { data, error } = await query
       if (error) {
@@ -279,7 +278,8 @@ export const useStateStore = defineStore("state", () => {
       console.log('get new fileter')
       filteredStory(newVal)
     }, 2000)
-  })
+  }, {deep:true})
+
   return {
     base64ToBlob,
     activeModal,
