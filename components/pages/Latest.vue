@@ -3,7 +3,7 @@
     <section class="latest">
         <div class="latest__header">
             <h2>Latest Story</h2>
-            <button>Explore more &rarr;</button>
+            <button @click="navigateTo('/story')">Explore more &rarr;</button>
         </div>
         <div class="latest__wrapper" v-if="stories">
             <div class="card" v-for="art in stories" :key="art.id">

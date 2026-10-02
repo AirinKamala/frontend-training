@@ -6,6 +6,7 @@ export const useStateStore = defineStore("state", () => {
   const activeModal = ref("");
   const supabase = useSupabaseClient()
   const articles = ref<IStory[]>([])
+  const storyStore = useStoryStore()
   // [
   //   {
   //     id: 1,
@@ -244,7 +245,9 @@ export const useStateStore = defineStore("state", () => {
   const filterParams = ref({
     query: '',
     cat: '',
-    asc: true
+    asc: true,
+    limit: 2,
+    page: 1
   })
 
   const getPath = (path: string, spliting: string) => {
@@ -254,11 +257,14 @@ export const useStateStore = defineStore("state", () => {
   }
 
   const filteredStory = async (paramQuery: any) => {
+    const prev = (paramQuery.page -1) * paramQuery.limit ;
+    const next = prev + paramQuery.limit -1
+    articles.value = []
     try {
-      let query = supabase.from('stories').select('*, category: categories(*), author: users(id, name, avatar_link)').order('created_at', { ascending: paramQuery.asc })
+      let query = supabase.from('stories').select('*, category: categories!inner(*), author: users(id, name, avatar_link)', ({count: 'exact'})).order('created_at', { ascending: paramQuery.asc })
       if (paramQuery.query && paramQuery.query.trim() !== '') {query = query.ilike('title', `%${paramQuery.query.trim()}%`)}
-      if (paramQuery.cat) { query = query.eq('category_id', paramQuery.cat) }
-      const { data, error } = await query
+      if (paramQuery.cat) { query = query.eq('categories.slug', paramQuery.cat) }
+      const { data,count, error } = await query.range(prev, next)
       if (error) {
         const mappedError: IError = {
           status: error.code,
@@ -267,19 +273,15 @@ export const useStateStore = defineStore("state", () => {
 
         return mappedError
       }
+      console.log(count);
+      storyStore.pageNum = count || 1
+      console.log(data);
       return articles.value = data
+      
     } catch (err: any) { throw err.message }
   }
 
-  let timeoutId: ReturnType<typeof setTimeout>
-  watch(() => ({ ...filterParams.value }), (newVal) => {
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => {
-      console.log('get new fileter')
-      filteredStory(newVal)
-    }, 2000)
-  }, {deep:true})
-
+  
   return {
     base64ToBlob,
     activeModal,

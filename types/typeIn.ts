@@ -11,6 +11,12 @@ export interface IStory {
     category: ICategory
 }
 
+export interface IPaginate {
+    stories: IStory[],
+    totalCount: number
+
+}
+
 export interface IPayloadStory {
     slug?: string,
     cover_image?: string,
@@ -59,7 +65,7 @@ export interface IAuth {
 export interface typeIn {
     getCategory(): Promise<ICategory[]>
     getDetailStory(): Promise<IStory>
-    getAllStories(): Promise<IStory[] | null>
+    getAllStories(): Promise<IPaginate>
     getSimiliarStores(): Promise<IStory[] | null>
     updateStory(id: string,inData: IPayloadStory): Promise<IStory>
 }

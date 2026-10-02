@@ -1,6 +1,7 @@
 <template>
     <h1>All story</h1>
     <UiBreadcrumb :bpath="routes.path" />
+    
     <div class="filter">
         <div class="filter__start">
 
@@ -14,7 +15,7 @@
 
             <select class="filter__start__cat" for="sort" name="sort" id="sort" v-model="state.filterParams.cat">
                 <option value=""> All genre</option>
-                <option v-for="cat in stories.categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                <option v-for="cat in stories.categories" :key="cat.id" :value="cat.slug">{{ cat.name }}</option>
             </select>
 
         </div>
@@ -22,15 +23,15 @@
             <UiSearch v-model="state.filterParams.query" />
         </div>
     </div>
-<!-- {{ storyData }} -->
     <p v-if="!storyData || storyData?.length === 0" class="notfound">There no matched articles</p>
     <section class="wrapper" v-else>
-        <div class="story card" v-for="story in state.articles" :key="story.id" @click="navigateTo(`/story/${story.slug}`)">
+        <div class="story card" v-for="story in state.articles" :key="story.id"
+            @click="navigateTo(`/story/${story.slug}`)">
             <picture class="card__pic story__pic">
                 <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
             </picture>
             <h3 class="card__title">{{ story.title }}</h3>
-            <UiTiptap :can-edit="false" v-model="story.content" />
+            <UiTiptap :can-edit="false" v-model="story.content" class="card__des" />
             <div class="card__footer">
                 <div class="avatar"><img :src="story.author?.avatar_link" alt="avatar"
                         style="border-radius: 100%; margin: 4px;"><span>{{ story.author?.name }}</span></div>
@@ -43,7 +44,7 @@
         </div>
     </section>
 
-    <UiPaginate />
+    <UiPaginate paginate="filter" />
 </template>
 
 <script setup lang="ts">
@@ -51,20 +52,48 @@ const routes = useRoute()
 const state = useStateStore()
 const stories = useStoryStore()
 
-const storyData = computed(()=> state.articles ?? [] )
+const storyData = computed(() => state.articles ?? [])
+
+let timeoutId: ReturnType<typeof setTimeout>
+  watch(() => (state.filterParams), (newVal, oldVal, onCleanUp) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(async() => {
+        if(oldVal && (newVal.cat !== oldVal.cat || newVal.query !== oldVal.query)) {newVal.page = 1}
+        try {
+            console.log("fetcher");
+            await state.filteredStory(newVal)
+        } catch (err:any) {
+            console.log(err);
+        }
+    }, 300)
+  }, {deep:true, immediate: true})
+
+  
+
 
 onMounted(async () => {
     const routes = useRoute()
     const st = useStateStore()
     const stories = useStoryStore()
     st.filterParams = {
-        query: String(routes.query.search || ''),
+        ...st.filterParams,
+        query: String(routes.query.ssearch || ''),
         cat: String(routes.query.category || ''),
-        asc: Boolean(routes.query.order)
+        asc: Boolean(routes.query.order),
+        page: 1
     }
     await st.filteredStory(st.filterParams)
-
     await stories.fetchCategories()
+})
+onUnmounted(() => {
+  clearTimeout(timeoutId)
+  state.filterParams = {
+    query: '',
+    cat: '',
+    asc: true,
+    limit: 2,
+    page: 1
+  }
 })
 </script>
 

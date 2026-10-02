@@ -91,8 +91,7 @@
 
                     <div class="card__body">
                         <h3 class="card__title">{{ story.title }}</h3>
-                        <Tiptap :can-edit="false" v-model="story.content" v-if="story" />
-                        <!-- <p>{{ story?.content }}</p> -->
+                        <Tiptap :can-edit="false" v-model="story.content" v-if="story" class="card__des" />
                         <div class="card__footer">
                             <span class="card__footer__category">{{ story?.category?.name }}</span>
                             <p>{{ state.formatted(story.created_at) }}</p>
@@ -101,7 +100,8 @@
                 </div>
             </div>
         </div>
-        <UiPaginate></UiPaginate>
+        <UiPaginate paginate="normal" />
+
     </section>
 </template>
 
@@ -111,11 +111,13 @@ import Tiptap from '~/components/ui/Tiptap.vue'
 import type { IAuthor } from '~/types/typeIn'
 const state = useStateStore()
 const st = useStoryStore()
+const user = useUserStore()
+
 
 const { openModal, closeModal, modalType, modalData } = useModal()
-const usert = ref<IAuthor | null>(null)
+const usert = computed<IAuthor | null>(()=>user.userData)
+const stories = computed(() => st.stories)
 
-const stories = st.stories?.filter(e => e.author?.id === usert.value?.id)
 
 const deleteStory = async (id: string, cover_image?: string) => {
     console.log(id, cover_image);
@@ -123,17 +125,15 @@ const deleteStory = async (id: string, cover_image?: string) => {
         await st.deleteStory(id, cover_image)
         console.log('sudah delete');
         closeModal()
-        st.getAllStories()
+        usert.value ? st.getStoryByUserId(usert.value.id) : window.location.reload()
     } catch (err: any) {
         throw err
     }
 }
 onMounted(() => {
     const story = useStoryStore()
-    story.getAllStories()
-    const user = useUserStore()
     user.getUser()
-    usert.value = user.userData
+    if (usert.value) story.getStoryByUserId(usert.value.id)
 })
 </script>
 
@@ -215,7 +215,7 @@ onMounted(() => {
 
         &__story {
             display: grid;
-            gap: 1rem;
+            gap: .5rem;
             grid-template-columns: repeat(1, minmax(1fr));
 
             &__nothing {
@@ -230,6 +230,11 @@ onMounted(() => {
         .card {
             max-width: 48rem;
             position: relative;
+            margin-bottom: 1rem;
+
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
 
             picture {
                 width: 100%;
