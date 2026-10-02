@@ -42,6 +42,7 @@ h1,
 h2,
 h3 {
   font-family: $font-playfair-display;
+  min-width: 0;
 }
 
 a {
@@ -238,4 +239,12 @@ section {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.clampped-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
 }

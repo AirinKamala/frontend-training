@@ -17,7 +17,7 @@
     }
 }
 
-@media (min-width: $sm) {
+@media (min-width: $sm-mx) {
     .logo{
         font-size: 24pt;
     }

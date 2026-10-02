@@ -34,10 +34,13 @@ const name = computed(()=>auth.userData?.name)
     align-items: center;
     gap: 2rem;
 
-    &__h1 {
-        font-size: 60px;
+    &__h1 { //60px
+        font-size: 20pt;
         font-family: $font-playfair-display;
         font-weight: 700;
+        @media (min-width: $md) {
+            font-size: 60px;
+        }
         span{
             font-family: inherit
 

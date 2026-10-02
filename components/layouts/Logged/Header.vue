@@ -3,12 +3,12 @@ import type { PropType } from 'vue';
 import Modal from '~/components/ui/Modal.vue';
 import type { IAuthor } from '~/types/typeIn';
 const { openModal, closeModal, modalType } = useModal()
-const {logout} = useUserStore()
-defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null}})
+const { logout } = useUserStore()
+defineProps({ userdata: { type: Object as PropType<IAuthor | null>, default: null } })
 </script>
 
 <template>
-    
+
     <header class="header">
         <UiLogo />
         <!-- goes to homepage -->
@@ -20,16 +20,17 @@ defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null
             </picture>
 
             <button class="header__nav__pro dropdown">
-                {{userdata?.name }} &darr;
+                <span class="clampped-text">{{ userdata?.name }}</span>
+                <span> &darr;</span>
                 <div class="dropdown__content">
-                    <span class="" @click="navigateTo('/dashboard')">My profile</span>
+                    <span @click="navigateTo('/dashboard')">My profile</span>
                     <span @click="openModal('logout')" class="">Logout</span>
-                     <Modal v-if="modalType === 'logout'" @close="closeModal">
+                    <Modal v-if="modalType === 'logout'" @close="closeModal">
                         <h2>Logout</h2>
                         <p>Are you sure want to logout?</p>
                         <div class="btn-wrap">
                             <button class="btn-cancel" @click="closeModal">Cancel</button>
-                            <button class="btn-confirm" @click="()=>{logout(); closeModal() }">Logout</button>
+                            <button class="btn-confirm" @click="() => { logout(); closeModal() }">Logout</button>
                         </div>
                     </Modal>
                 </div>
@@ -66,7 +67,8 @@ defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null
             &__img {
                 object-fit: cover;
             }
-            &__initial{
+
+            &__initial {
                 background-color: $accent-light;
                 color: $accent;
                 font-size: 24pt;
@@ -84,6 +86,13 @@ defineProps({userdata: {type: Object as PropType <IAuthor | null>, default: null
             padding: 1rem;
             font-weight: 700;
             font-family: $font-dm-sans ;
+            min-width: 72px;
+            display: inline-flex;
+
+            @media (max-width: $sm-mx) {
+                max-width: 8rem;
+
+            }
 
             .dropdown__content {
                 min-width: 72px;

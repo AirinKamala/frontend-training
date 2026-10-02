@@ -5,7 +5,7 @@
                 <img :src="usert?.avatar_link" alt="Avatar" v-if="usert">
             </picture>
             <div class="profile__head__des">
-                <h2>{{ usert?.name }}
+                <h2>{{ usert?.name }} <br>
                     <span>{{ usert?.email }}</span>
                 </h2>
                 <p>
@@ -17,7 +17,7 @@
         <button class="btn btn-accent" @click="navigateTo('/dashboard/me')">Edit profile</button>
     </section>
     <section class="mystory">
-        <h2>My Story</h2>
+        <h2 style="margin-left: 2rem; font-size: 28px;">My Story</h2>
         <div class="mystory__content">
             <div class="mystory__content__add">
                 <h3>Write your story</h3>
@@ -115,7 +115,7 @@ const user = useUserStore()
 
 
 const { openModal, closeModal, modalType, modalData } = useModal()
-const usert = computed<IAuthor | null>(()=>user.userData)
+const usert = computed<IAuthor | null>(() => user.userData)
 const stories = computed(() => st.stories)
 
 
@@ -144,9 +144,13 @@ onMounted(() => {
     justify-items: center;
     gap: 1rem;
     margin: .5rem 0;
+    width: inherit;
 
     &__head {
         display: grid;
+        text-wrap: wrap;
+        max-width: inherit;
+
 
         &__pic {
             width: 8rem;
@@ -167,13 +171,15 @@ onMounted(() => {
         p {
             color: rgb(56, 56, 56);
             font-size: 12pt;
+            min-width: 0;
+            word-break: break-all;
         }
-
+        
         &__des {
             display: grid;
-
+            
             h2 {
-                display: grid;
+                text-wrap: wrap;
                 margin-bottom: 1rem;
             }
         }
