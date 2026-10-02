@@ -4,14 +4,14 @@
     <section class="shead" v-if="story">
         <p class="shead__date">{{ state.formatted(story.created_at) }}</p>
         <h1>{{ story.title }}</h1>
-        <div class="avatar"><img :src="story?.author?.avatar_link || story.cover_image" alt=""><span>{{ story?.author?.name }}</span></div>
+        <div class="avatar"><img :src="story?.author?.avatar_link || story.cover_image" alt=""><span>{{
+            story?.author?.name }}</span></div>
     </section>
-    <section class="scontent" v-if="story">
+    <section class="try" v-if="story">
         <picture class="scontent__pic"><img :src="story.cover_image" alt=""></picture>
-        <Tiptap :canEdit="false" v-model="story.content" v-if="story" class="scontent__des"/>
+        <Tiptap :canEdit="false" v-model="story.content" v-if="story" class="scontent__des" />
     </section>
     <HomeByCategory title="Similiar Story" :stories="stories.similiarStory ?? []" variant="flex" :isExplore="false" />
-
 </template>
 
 <script setup lang="ts">
@@ -20,7 +20,7 @@ import Tiptap from '~/components/ui/Tiptap.vue';
 
 const state = useStateStore()
 const stories = useStoryStore()
-const story = computed(()=>stories.singleStory)
+const story = computed(() => stories.singleStory)
 const routes = useRoute()
 
 
@@ -29,7 +29,7 @@ onMounted(async () => {
     const slug = String(routes.params.slug)
     await stories.getDetailStoryBySlug(slug)
     const catId = String(stories.singleStory?.category.id)
-     stories.getSimiliarStory(catId, slug)
+    stories.getSimiliarStory(catId, slug)
 
 })
 </script>
@@ -50,11 +50,9 @@ onMounted(async () => {
 }
 
 .scontent {
-    display: flex;
-    gap: 1.5rem;
-    text-align: justify;
-    flex-direction: column;
-
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
 
     &__pic {
         overflow: hidden;
@@ -63,6 +61,7 @@ onMounted(async () => {
         display: flex;
         border-radius: 10px;
         box-shadow: $shadow;
+        margin-bottom: 1rem;
 
         img {
             object-fit: cover;
@@ -76,17 +75,14 @@ onMounted(async () => {
 
 @media (width > $md) {
     .scontent {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-
         &__pic {
-            grid-column: span 1 / span 3;
-        }
-
-        &__des {
-            padding-top: 1rem;
-            grid-column: span 2 / span 3;
+            float: left;
+            width: 28rem;
+            margin-right: 16px;
+            margin-bottom: 12px;
+            border-radius: 4px;
         }
     }
+
 }
 </style>

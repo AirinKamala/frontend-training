@@ -3,21 +3,23 @@
     <section class="section" v-if="props.stories">
         <div class="section__header">
             <h2 class="section__title">{{ props.title }}</h2>
-            <button v-if="isExplore" class="section__btn">Explore more &rarr;</button>
+            <button v-if="isExplore" class="section__btn" @click="exploreLink('/story')">Explore more &rarr;</button>
         </div>
         <div :class="`section__${props.variant}`">
-            <div class="card" v-for="story in props.stories" :key="story?.id" @click="navigateTo(`/story/${story.slug}`)">
+            <div class="card" v-for="story in props.stories" :key="story?.id"
+                @click="navigateTo(`/story/${story.slug}`)">
                 <picture class="card__pic">
                     <img :src="story?.cover_image" loading="lazy" :alt="story?.title" class="card__pic__img">
                 </picture>
                 <div class="card__body">
                     <h3 class="card__title" @click="navigateTo(`/story/${story.slug}`)">{{ story.title }}</h3>
-                    <Tiptap v-if="story" style="scroll-behavior: auto;" :can-edit="false" v-model="story.content" class="card__des" />
+                    <Tiptap v-if="story" style="scroll-behavior: auto;" :can-edit="false" v-model="story.content"
+                        class="card__des" />
 
                     <div class="card__footer">
                         <div class="avatar"><img :src="story?.author?.avatar_link" alt="avatar"
                                 style="border-radius: 100%; margin: 4px;"><span>{{ story?.author?.name }}</span></div>
-                        <p>{{ state.formatted(story?.created_at) }}</p>
+                        <p class="line-clamp-1">{{ state.formatted(story?.created_at) }}</p>
                     </div>
                 </div>
             </div>
@@ -51,16 +53,23 @@
 
     &__flex {
         margin-top: 2rem;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        display: flex;
+        width: 100%;
         overflow-x: auto;
         gap: 36px;
 
-        picture {
-            max-width: 12rem;
-            height: 12rem;
-
+        @media (width <= $lg) {
+            .section__flex {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                // picture {
+                //     // max-width: 24rem;
+                //     height: 20rem;
+        
+                // }
+            }
         }
+
     }
 
     &__grid {
@@ -69,10 +78,13 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+
         &>*:first-child {
             display: block;
             align-items: end;
             flex: full;
+            margin: 1rem auto;
+
             .card__pic {
                 width: 100%;
                 height: 80%;
@@ -81,6 +93,7 @@
 
         &>*:not(:first-child) {
             flex: 2;
+
             picture {
                 width: 100%;
                 max-height: 20rem;
@@ -88,6 +101,7 @@
         }
     }
 }
+
 
 @media (width >=$md) {
     picture {
@@ -126,7 +140,8 @@
             }
         }
     }
-    .section__flex > .card > .card__pic {
+
+    .section__flex>.card>.card__pic {
         height: auto;
         max-height: 24rem;
     }
@@ -137,7 +152,7 @@
 import type { IStory } from '~/types/typeIn';
 import Tiptap from '../ui/Tiptap.vue';
 import type { PropType } from 'vue';
-
+const router = useRouter()
 const state = useStateStore()
 const props = defineProps({
 
@@ -146,4 +161,11 @@ const props = defineProps({
     variant: { type: String, required: true, value: ["grid", "flex"] },
     isExplore: { type: Boolean, default: true }
 })
+
+const exploreLink = (url: string) => {
+    router.push({
+        path: url,
+        query: { category: props.title.toLowerCase() }
+    })
+}
 </script>
